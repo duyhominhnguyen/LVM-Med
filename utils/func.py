@@ -16,6 +16,12 @@ def parse_config():
         help='Path to the config file.'
     )
     parser.add_argument(
+        '-2D', 
+        '--use_2D', 
+        action='store_true', 
+        help='')
+    
+    parser.add_argument(
         '-overwrite',
         action='store_true',
         default=False,
@@ -30,8 +36,7 @@ def parse_config():
     parser.add_argument(
         '-test', 
         '--use_test_mode', 
-        type=int, 
-        default=0, 
-        help='Flag for inference only (no train mode)')
+        action='store_true', 
+        help='')
     args = parser.parse_args()
     return args
