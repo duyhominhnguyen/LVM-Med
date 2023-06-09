@@ -16,12 +16,6 @@ def parse_config():
         help='Path to the config file.'
     )
     parser.add_argument(
-        '-2D', 
-        '--use_2D', 
-        action='store_true', 
-        help='')
-    
-    parser.add_argument(
         '-overwrite',
         action='store_true',
         default=False,

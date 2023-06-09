@@ -1,0 +1,28 @@
+base:
+  is_2D: True
+  is_3D: False
+  dataset_name: drive
+  random_seed: 100
+  gpu_id: 3
+  num_workers: 40
+  pin_memory: True 
+  original_checkpoint: '/home/tannp/ICML_workshop/work_dir/SAM/sam_vit_b_01ec64.pth' # Original checkpoint from segment-anything project
+  best_valid_model_checkpoint: 'sam_model_best_dice_original_drive_seed'
+  image_shape: (3, 1024)
+
+train:
+  task: sam
+  train_batch_size: 20
+  valid_batch_size: 1
+  test_batch_size: 1
+  optimizer: 'adam'
+  learning_rate: 3e-4
+  num_epochs: 2
+
+dataloader:
+  train_dir_img: '/home/tannp/MedSAM_original/dataloader/Segmentation_dataset/DRIVE/train'
+  train_dir_mask: '/home/tannp/MedSAM_original/dataloader/Segmentation_dataset/DRIVE/train_labels'
+  valid_dir_img: '/home/tannp/MedSAM_original/dataloader/Segmentation_dataset/DRIVE/valid'
+  valid_dir_mask: '/home/tannp/MedSAM_original/dataloader/Segmentation_dataset/DRIVE/valid_labels'
+  test_dir_img: '/home/tannp/MedSAM_original/dataloader/Segmentation_dataset/DRIVE/test'
+  test_dir_mask: '/home/tannp/MedSAM_original/dataloader/Segmentation_dataset/DRIVE/test_labels'

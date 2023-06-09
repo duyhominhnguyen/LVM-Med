@@ -98,19 +98,19 @@ class SegmentationDataset(Dataset):
 
         name = self.ids[idx]
         
-        if self.name_dataset == "idrid":
-            mask_file = os.path.join(self.masks_dir, name)
-        elif self.name_dataset == "fgadr":
-            mask_file = os.path.join(self.masks_dir, name)
-        elif self.name_dataset == "lits":
-            mask_file = os.path.join(self.masks_dir, name).replace("volume", "segmentation")
-        elif self.name_dataset == "isiconlytrain":
-            mask_file = os.path.join(self.masks_dir, name)
+        if self.name_dataset == "isiconlytrain":
+            mask_file = os.path.join(self.masks_dir, name).split(".jpg")[0]
             mask_file =  mask_file + "_segmentation.png"
         elif self.name_dataset == "buidnewprocess":
             mask_file = os.path.join(self.masks_dir, name)
         elif self.name_dataset == "kvasir":
             mask_file = os.path.join(self.masks_dir, name)
+        elif self.name_dataset == "drive":
+            mask_file = os.path.join(self.masks_dir, name).replace("training", "manual1")
+        elif self.name_dataset == "bts":
+            mask_file = os.path.join(self.masks_dir, name).replace(self.image_type, "_seg_")
+        elif self.name_dataset in ["las_mri", "las_ct"]:
+            mask_file = os.path.join(self.masks_dir, name).replace("image", "label")
         else:
             mask_file = os.path.join(self.masks_dir, name)
 
@@ -125,17 +125,20 @@ class SegmentationDataset(Dataset):
         img = self.preprocess(img, self.scale, is_mask=False)
         mask = self.preprocess(mask, self.scale, is_mask=True)
 
-        if self.name_dataset == "idrid":
-            mask[mask < 50] = 0
-            mask[mask >= 50] = 1
-        elif self.name_dataset == "fgadr":
-            mask[mask < 50] = 0
-            mask[mask >= 50] = 1
-        elif self.name_dataset in ["kvasir", "buidnewprocess"]:
+        if self.name_dataset in ["kvasir", "buidnewprocess"]:
             mask[mask < 50] = 0
             mask[mask > 200] = 1
         elif self.name_dataset == "isiconlytrain":
             mask[mask > 1] = 1 
+        elif self.name_dataset.startswith("las"):
+            mask[mask == 30] = 1
+            mask[mask == 60] = 2 # main predict
+            mask[mask == 90] = 3
+            mask[mask == 120] = 4
+            mask[mask == 150] = 5
+            mask[mask == 180] = 6
+            mask[mask == 210] = 7
+            mask[mask > 7] = 0
         else:
             mask[mask>0] = 1
 
@@ -143,7 +146,7 @@ class SegmentationDataset(Dataset):
 
         data = {
             'image': torch.as_tensor(img.copy()).permute(2, 0, 1).float().contiguous(),
-            'mask': torch.tensor(mask[None, :,:]).long(),
+            'mask': torch.tensor(mask[None, :, :]).long(),
             'bboxes' : torch.tensor(bboxes).float(),
             'mask_file' : mask_file,
             'img_file' : img_file
@@ -171,7 +174,7 @@ class SegmentationDataset(Dataset):
             _3d_data = {'image': images, 'mask': masks, 'bboxes': bboxes}
             yield _3d_data
 
-class SegmentationDataset_aug(Dataset):
+class AugmentedSegmentationDataset(Dataset):
     def __init__(self, name_dataset: str, images_dir: str, masks_dir: str, scale: float = 1.0, transform=True):
 
         self.images_dir = images_dir
@@ -236,10 +239,11 @@ class SegmentationDataset_aug(Dataset):
             return self.cache[idx]
 
         name = self.ids[idx]
-        if self.name_dataset == "idrid":
-            mask_file = os.path.join(self.masks_dir, name).split('.npy')[0] + '.jpg'
-        elif self.name_dataset == "fgadr":
-            mask_file = os.path.join(self.masks_dir, name).split('.npy')[0] + '.png'
+        
+        if self.name_dataset == "bts":
+            mask_file = os.path.join(self.masks_dir, name).replace(self.image_type, "_seg_")
+        elif self.name_dataset in ["las_mri", "las_ct"]:
+            mask_file = os.path.join(self.masks_dir, name).replace("image", "label")
 
         img_file = os.path.join(self.images_dir, name)
 
@@ -252,12 +256,15 @@ class SegmentationDataset_aug(Dataset):
         img = self.preprocess_non_expand(img, self.scale, False, self.transform)
         mask = self.preprocess(mask, self.scale, True, self.transform)
         
-        if self.name_dataset == "idrid":
-            mask[mask < 50] = 0
-            mask[mask >= 50] = 1
-        elif self.name_dataset == "fgadr":
-            mask[mask < 50] = 0
-            mask[mask >= 50] = 1
+        if self.name_dataset.startswith("las"):
+            mask[mask == 30] = 1
+            mask[mask == 60] = 2 # main predict
+            mask[mask == 90] = 3
+            mask[mask == 120] = 4
+            mask[mask == 150] = 5
+            mask[mask == 180] = 6
+            mask[mask == 210] = 7
+            mask[mask > 7] = 0
         else:
             mask[mask>0]=1
 
@@ -265,7 +272,7 @@ class SegmentationDataset_aug(Dataset):
 
         data = {
             'image': torch.as_tensor(img.copy()).permute(2, 0, 1).float().contiguous(),
-            'mask': torch.as_tensor(mask.copy().astype(int)).long().contiguous(),
+            'mask': torch.tensor(mask[None, :, :]).long(),
             'bboxes' : torch.tensor(bboxes).float(),
             'mask_file' : mask_file,
             'img_file' : img_file

@@ -118,7 +118,7 @@ def fit(cfg,
                                 valid_loader,
                                 device=device)
     
-        epoch_loss /= (step * len(train_loader))
+        epoch_loss /= ((step + 1) * len(train_loader))
         print(f'Loss: {epoch_loss}\n---')
         
         """
@@ -210,7 +210,6 @@ def eval_dice(sam_model,
     
     return dice_score.cpu().numpy()/len(loader) 
 
-# if __name__=="__main__":
 def medsam_2d(yml_args, cfg):
     """
     Training warm up

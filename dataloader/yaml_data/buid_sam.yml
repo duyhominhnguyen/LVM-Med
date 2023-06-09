@@ -1,4 +1,6 @@
 base:
+  is_2D: True
+  is_3D: False
   dataset_name: buidnewprocess
   random_seed: 100
   gpu_id: 3

@@ -4,18 +4,17 @@ join = os.path.join
 import gc
 from tqdm import tqdm
 import torch
-import monai
+import monai, random
 from segment_anything import sam_model_registry
 from dataloader.sam_transforms import ResizeLongestSide
-from dataloader.dataloader import get_precomputed_dataloader
+from dataloader.dataloader import embedding_dataloader
 from utils.SurfaceDice import multiclass_iou
-import argparse
 
 
-def fit(args,
+def fit(cfg,
         sam_model,
         train_loader,
-        valid_loader,
+        valid_dataset,
         optimizer,
         criterion,
         model_save_path):
@@ -24,9 +23,9 @@ def fit(args,
     """
     
     best_valid_iou3d = 0
-    device = args.gpu_id
-    dataset = args.dataset_name
-    num_epochs = args.num_epochs
+    
+    device = cfg.base.gpu_id
+    num_epochs = cfg.train.num_epochs
     
     for epoch in range(num_epochs):
         sam_model.train()
@@ -39,17 +38,27 @@ def fit(args,
 
             """
             Load precomputed image embeddings to ease training process
+            We also load mask labels and bounding boxes directly computed from ground truth masks
             """
-            image_embedding, true_mask, boxes = batch['image'], batch['mask'], batch['bboxes']
+            image, true_mask, boxes = batch['image'], batch['mask'], batch['bboxes']
             sam_model = sam_model.to(f"cuda:{device}")
-            image_embedding = image_embedding.to(f"cuda:{device}")
+            image = image.to(f"cuda:{device}")
+            true_mask = true_mask.to(f"cuda:{device}")
 
-            true_mask.to(f"cuda:{device}")
-            
             """
             We freeze image encoder & prompt encoder, only finetune mask decoder
             """
             with torch.no_grad():
+                """
+                Compute image embeddings from a batch of images with SAM's frozen encoder
+                """
+                encoder = torch.nn.DataParallel(sam_model.image_encoder, device_ids=[3, 2, 1, 0], output_device=device)
+                encoder = encoder.to(f"cuda:{encoder.device_ids[0]}")
+                sam_model = sam_model.to(f"cuda:{encoder.device_ids[0]}")
+                image = image.to(f"cuda:{encoder.device_ids[0]}")
+                image = sam_model.preprocess(image[:, :, :])
+                image_embedding = encoder(image)
+
                 """
                 Get bounding boxes to make segmentation prediction
                 We follow the work by Jun Ma & Bo Wang in Segment Anything in Medical Images (2023)
@@ -63,7 +72,7 @@ def fit(args,
                     box_torch = box_torch[:, None, :] # (B, 1, 4)
                 
                 """
-                Prompt encoder
+                Encode box prompts information with SAM's frozen prompt encoder
                 """
                 prompt_encoder = torch.nn.DataParallel(sam_model.prompt_encoder, device_ids=[0,1,2,3], output_device=device)
                 prompt_encoder = prompt_encoder.to(f"cuda:{prompt_encoder.device_ids[0]}")
@@ -75,7 +84,7 @@ def fit(args,
                 )
 
             """
-            We now retrain mask decoder
+            We now finetune mask decoder
             """
             sam_model = sam_model.to(f"cuda:{device}")
             predicted_mask, iou_predictions = sam_model.mask_decoder(
@@ -84,7 +93,8 @@ def fit(args,
                 sparse_prompt_embeddings=sparse_embeddings, # (B, 2, 256)
                 dense_prompt_embeddings=dense_embeddings, # (B, 256, 64, 64)
                 multimask_output=False,
-            )
+            ) # -> (B, 1, 256, 256)
+
             predicted_mask = predicted_mask.to(f"cuda:{device}")
             true_mask = true_mask.to(f"cuda:{device}")
             loss = criterion(predicted_mask, true_mask)
@@ -94,8 +104,10 @@ def fit(args,
             """
             optimizer.zero_grad(set_to_none=True)
             loss.backward()
-            clip_value = 1
+        
+            clip_value = 1 # Clip gradient
             torch.nn.utils.clip_grad_norm_(sam_model.mask_decoder.parameters(), clip_value)
+        
             optimizer.step()
             epoch_loss += loss.item()
         
@@ -107,7 +119,7 @@ def fit(args,
                                  valid_dataset,
                                  device=device)
     
-        epoch_loss /= (step * len(train_loader))
+        epoch_loss /= ((step + 1) * len(train_loader))
         print(f'Loss: {epoch_loss}\n---')
         
         """
@@ -115,7 +127,7 @@ def fit(args,
         """
         if best_valid_iou3d < valid_iou3d:
             best_valid_iou3d = valid_iou3d
-            torch.save(sam_model.state_dict(), join(model_save_path, f'sam_model_best_iou_original_{dataset}_seed{args.random_seed}.pth'))
+            torch.save(sam_model.state_dict(), join(model_save_path, f'{cfg.base.best_valid_model_checkpoint}{cfg.base.random_seed}.pth'))
         
         print(f"Valid 3D IoU: {valid_iou3d*100}")
         print('=======================================')
@@ -126,7 +138,12 @@ def eval_iou(sam_model,
             loader,
             device):
     """
-    We use IoU to evalute 3D samples
+    We use IoU to evalute 3D samples.
+    
+    For 3D evaluation, we first concatenate 2D slices into 1 unified 3D volume and pass into model
+    However, due to limited computational resources, we could not perform 3D evaluation in GPU.
+    Hence, I set up to perform this function completely on CPU. 
+    If you have enough resources, you could evaluate on multi-gpu the same as in training function.
     """
     gc.collect()
     torch.cuda.empty_cache()
@@ -134,28 +151,37 @@ def eval_iou(sam_model,
     
     iou_score = 0
     num_volume = 0
-    for step, batch in enumerate(loader.get_3d_iter()):
-        image_embedding, true_mask, boxes = batch['image'], batch['mask'], batch['bboxes']
-        true_mask = true_mask.to(f"cuda:{device}", dtype=torch.float32)
-        image_embedding = image_embedding.to(f"cuda:{device}")
-        
+    for _, batch in enumerate(tqdm(loader.get_3d_iter(), leave=False)):
+        """
+        Load precomputed embeddings, mask labels and bounding boxes computed directly from ground truth masks
+        """
+        image, true_mask, boxes = batch['image'], batch['mask'], batch['bboxes']
+        image = image.to(f"cpu")
+        true_mask = true_mask.to(f"cpu", dtype=torch.float32)
+
+        """
+        Compute image embeddings
+        """
+        sam_model = sam_model.to(f"cpu")
+        image = image.to(f"cpu")
+        image = sam_model.preprocess(image[:, :, :])
+        image_embedding = sam_model.image_encoder(image)
+
         """
         Get bboxes
         """
         box_np = boxes.numpy()
         sam_trans = ResizeLongestSide(sam_model.image_encoder.img_size)
         box = sam_trans.apply_boxes(box_np, (image_embedding.shape[0], image_embedding.shape[1]))
-        box_torch = torch.as_tensor(box, dtype=torch.float32, device=f"cuda:{device}")
+        box_torch = torch.as_tensor(box, dtype=torch.float32, device=device)
         if len(box_torch.shape) == 2:
             box_torch = box_torch[:, None, :] # (B, 1, 4)
         
         """
         Prompt encoder component
         """
-        prompt_encoder = torch.nn.DataParallel(sam_model.prompt_encoder, device_ids=[1,2,3,0], output_device=device)
-        prompt_encoder = prompt_encoder.to(f"cuda:{prompt_encoder.device_ids[0]}")
-        box_torch = box_torch.to(f"cuda:{prompt_encoder.device_ids[0]}")
-        sparse_embeddings, dense_embeddings = prompt_encoder(
+        box_torch = box_torch.to(f"cpu")
+        sparse_embeddings, dense_embeddings = sam_model.prompt_encoder(
             points=None,
             boxes=box_torch,
             masks=None,
@@ -165,88 +191,78 @@ def eval_iou(sam_model,
         Mask decoder component
         """
         sam_model = sam_model.to(f"cpu")
-        true_mask = true_mask.to(f"cpu", dtype=torch.float32)
         mask_segmentation, iou_predictions = sam_model.mask_decoder(
             image_embeddings=image_embedding.to(f"cpu"), # (B, 256, 64, 64)
             image_pe=sam_model.prompt_encoder.get_dense_pe(), # (1, 256, 64, 64)
-            sparse_prompt_embeddings=sparse_embeddings.to(f"cpu"), # (B, 2, 256)
-            dense_prompt_embeddings=dense_embeddings.to(f"cpu"), # (B, 256, 64, 64)
+            sparse_prompt_embeddings=sparse_embeddings, # (B, 2, 256)
+            dense_prompt_embeddings=dense_embeddings, # (B, 256, 64, 64)
             multimask_output=False,
-        ) # -> (B, 1, 256, 256)
+        ) # -> (B, 256, 256)
+        
+        """
+        Transform prediction and evaluate
+        """
+        true_mask = true_mask.to("cpu")
         medsam_seg_prob = torch.sigmoid(mask_segmentation)
         medsam_seg = (medsam_seg_prob > 0.5).to(dtype=torch.float32)
         iou_score += multiclass_iou((true_mask>0).to(dtype=torch.float32), (medsam_seg>0).to(dtype=torch.float32))
         num_volume += 1
     return iou_score.cpu().numpy()/num_volume
     
-if __name__=="__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--task', type=str, default=f"sam", help='Task to run')
-    parser.add_argument('-ds', '--dataset_name', type=str, default=f"fgadr", help='Target domain (dataset) to run')
-    parser.add_argument('-opt', '--optimizer', type=str, default=f"sgd", help='Optimizer to run')
-    parser.add_argument('-lr', '--learning_rate', type=float, default=f"1", help='learning rate to run')
-    parser.add_argument('-bs', '--train_batch_size', type=int, default=20, help='Train batch size')
-    parser.add_argument('-n_ep', '--num_epochs', type=int, default=f"5", help='Number of epochs')
-    parser.add_argument('-seed', '--random_seed', type=int, default=0, help='Random seed')
-    parser.add_argument('-gpu', '--gpu_id', type=int, default=3, help='Gpu id to use')
-    parser.add_argument('-worker', '--num_workers', type=int, default=40, help='Number of workers')
-    parser.add_argument('-test', '--use_test_mode', type=int, default=0, help='Flag for inference only (no train mode)')
-    
-    args = parser.parse_args()
-
+def medsam_3d(yml_args, cfg):
     """
     Training warm up
     """
     torch.multiprocessing.set_start_method('spawn')
-    torch.manual_seed(args.random_seed)
-    np.random.seed(args.random_seed)
+    
+    random.seed(cfg.base.random_seed)
+    np.random.seed(cfg.base.random_seed)
+    torch.manual_seed(cfg.base.random_seed)
+    torch.cuda.manual_seed(cfg.base.random_seed)
+
+    torch.backends.cudnn.deterministic = True
 
     gc.collect()
     torch.cuda.empty_cache()
     torch.cuda.reset_peak_memory_stats()
-    
+
     """
     General configuration
     """
-    model_save_path = join("./work_dir", 'SAM-ViT-B')
     img_shape = (3, 1024) # hard settings image shape as 3 x 1024 x 1024
-
-    print(f"Fine-tuned SAM in {args.dataset_name} with {args.optimizer}, LR = {args.learning_rate}")
+    model_save_path = join("./work_dir", 'SAM-ViT-B')
     os.makedirs(model_save_path, exist_ok=True)
+
+    print(f"Fine-tuned SAM (3D IoU) in {cfg.base.dataset_name} with {cfg.train.optimizer}, LR = {cfg.train.learning_rate}")
 
     """
     Load SAM with its original checkpoint 
     """
-    sam_model = sam_model_registry["vit_b"](checkpoint='work_dir/SAM/sam_vit_b_01ec64.pth')
+    sam_model = sam_model_registry["vit_b"](checkpoint=cfg.base.original_checkpoint)
 
     """
     Load precomputed embeddings
     """    
-    train_loader, valid_loader, test_loader, valid_dataset, test_dataset = get_precomputed_dataloader(args,
-                                                                                                    img_shape=img_shape,
-                                                                                                    num_workers=args.num_workers,
-                                                                                                    train_batch_size=args.train_batch_size,
-                                                                                                    val_batch_size=1,
-                                                                                                    test_batch_size=1)
+    train_loader, _, _, valid_dataset, test_dataset = embedding_dataloader(cfg)
 
     """
     Optimizer & learning rate scheduler config
     """
-    if args.optimizer == 'sgd':
+    if cfg.train.optimizer == 'sgd':
         optimizer = torch.optim.SGD(sam_model.mask_decoder.parameters(),
-                                    lr=args.learning_rate,
+                                    lr=float(cfg.train.learning_rate),
                                     momentum=0.9)
-    elif args.optimizer == 'adam':
+    elif cfg.train.optimizer == 'adam':
         optimizer = torch.optim.Adam(sam_model.mask_decoder.parameters(), 
-                                     lr=args.learning_rate,
+                                     lr=float(cfg.train.learning_rate),
                                      weight_decay=0,
                                      amsgrad=True)
-    elif args.optimizer == 'adamw':
+    elif cfg.train.optimizer == 'adamw':
         optimizer = torch.optim.AdamW(sam_model.mask_decoder.parameters(), 
-                                     lr=args.learning_rate,
+                                     lr=float(cfg.train.learning_rate),
                                      weight_decay=0)
     else:
-        raise NotImplementedError(f"Optimizer {args.optimizer} is not set up yet")
+        raise NotImplementedError(f"Optimizer {cfg.train.optimizer} is not set up yet")
     
     """
     Loss function
@@ -259,12 +275,11 @@ if __name__=="__main__":
     """
     Train model
     """
-    if not args.use_test_mode:
-        fit(args,
+    if not yml_args.use_test_mode:
+        fit(cfg,
             sam_model=sam_model,
             train_loader=train_loader,
-            valid_loader=valid_loader,
-            valid_dataset = valid_dataset,
+            valid_dataset=valid_dataset,
             optimizer=optimizer,
             criterion=criterion,
             model_save_path=model_save_path)
@@ -273,9 +288,9 @@ if __name__=="__main__":
     Test model
     """
     with torch.no_grad():
-        sam_model_test_iou = sam_model_registry["vit_b"](checkpoint=join(model_save_path, f'sam_model_best_iou_original_{args.dataset_name}_seed{args.random_seed}.pth'))
+        sam_model_test_iou = sam_model_registry["vit_b"](checkpoint=join(model_save_path, f'{cfg.base.best_valid_model_checkpoint}{cfg.base.random_seed}.pth'))
         sam_model_test_iou.eval()
         test_iou_score = eval_iou(sam_model_test_iou,
-                                test_dataset,
-                                device=args.gpu_id)
-        print(f"Test 3D IoU score after training with {args.optimizer}(lr = {args.learning_rate}): {test_iou_score *100}")
+                                    test_dataset,
+                                    device=cfg.base.gpu_id)
+        print(f"Test 3D IoU score after training with {cfg.train.optimizer}(lr = {cfg.train.learning_rate}): {test_iou_score *100}")
