@@ -53,7 +53,7 @@ def get_bbox_from_mask(mask):
 
 
 class SegmentationDataset(Dataset):
-    def __init__(self, name_dataset: str, images_dir: str, masks_dir: str, scale: float = 1.0):
+    def __init__(self, name_dataset: str, images_dir: str, masks_dir: str, scale = (1024, 256)):
         self.images_dir = images_dir
         self.masks_dir = masks_dir
         self.scale = scale
@@ -70,7 +70,7 @@ class SegmentationDataset(Dataset):
     @classmethod
     def preprocess(self, img, scale, is_mask):
         img = resize(img, 
-                     (1024, 1024), 
+                     (scale[0], scale[0]), 
                      order=0, 
                      preserve_range=True, 
                      anti_aliasing=False).astype('uint8')
@@ -79,7 +79,7 @@ class SegmentationDataset(Dataset):
             img = ((img - img.min()) * (1/(0.01 + img.max() - img.min()) * 255)).astype('uint8')
         if is_mask:
             img = resize(img, 
-                         (256, 256), 
+                         (scale[1], scale[1]), 
                          order=0, 
                          preserve_range=True, 
                          anti_aliasing=False).astype('uint8')
@@ -175,7 +175,7 @@ class SegmentationDataset(Dataset):
             yield _3d_data
 
 class AugmentedSegmentationDataset(Dataset):
-    def __init__(self, name_dataset: str, images_dir: str, masks_dir: str, scale: float = 1.0, transform=True):
+    def __init__(self, name_dataset: str, images_dir: str, masks_dir: str, scale = (1024, 256), transform=True):
 
         self.images_dir = images_dir
         self.masks_dir = masks_dir
@@ -194,7 +194,7 @@ class AugmentedSegmentationDataset(Dataset):
     @classmethod
     def preprocess(self, img, scale, is_mask, transform):
         img = resize(img, 
-                     (1024, 1024), 
+                     (scale[0], scale[0]), 
                      order=0, 
                      preserve_range=True, 
                      anti_aliasing=False).astype('uint8')
@@ -203,7 +203,7 @@ class AugmentedSegmentationDataset(Dataset):
             img = ((img - img.min()) * (1/(0.01 + img.max() - img.min()) * 255)).astype('uint8')
         if is_mask:
             img = resize(img, 
-                         (256, 256), 
+                         (scale[1], scale[1]), 
                          order=0, 
                          preserve_range=True, 
                          anti_aliasing=False).astype('uint8')
@@ -212,7 +212,7 @@ class AugmentedSegmentationDataset(Dataset):
     @classmethod
     def preprocess_non_expand(self, img, scale, is_mask, transform):
         img = resize(img, 
-                     (1024, 1024), 
+                     (scale[0], scale[0]), 
                      order=0, 
                      preserve_range=True, 
                      anti_aliasing=False).astype('uint8')
@@ -221,7 +221,7 @@ class AugmentedSegmentationDataset(Dataset):
             img = ((img - img.min()) * (1/(0.01 + img.max() - img.min()) * 255)).astype('uint8')
         if is_mask:
             img = resize(img, 
-                         (256, 256), 
+                         (scale[1], scale[1]), 
                          order=0, 
                          preserve_range=True, 
                          anti_aliasing=False).astype('uint8')

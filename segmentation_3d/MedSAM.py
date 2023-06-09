@@ -7,7 +7,7 @@ import torch
 import monai, random
 from segment_anything import sam_model_registry
 from dataloader.sam_transforms import ResizeLongestSide
-from dataloader.dataloader import embedding_dataloader
+from dataloader.dataloader import sam_dataloader
 from utils.SurfaceDice import multiclass_iou
 
 
@@ -243,7 +243,7 @@ def medsam_3d(yml_args, cfg):
     """
     Load precomputed embeddings
     """    
-    train_loader, _, _, valid_dataset, test_dataset = embedding_dataloader(cfg)
+    train_loader, _, _, valid_dataset, test_dataset = sam_dataloader(cfg)
 
     """
     Optimizer & learning rate scheduler config
