@@ -1,0 +1,24 @@
+base:
+  dataset_name: buidnewprocess
+  gpu_id: '3'
+  original_checkpoint: 'imagenet' # Original checkpoint from segment-anything project
+  best_valid_model_checkpoint: './working_dir/checkpoint'
+  image_shape: 256
+
+train:
+  train_batch_size: 32
+  valid_batch_size: 1
+  test_batch_size: 1
+  optimizer: 'adam'
+  learning_rate: 0.0001
+  num_epochs: 20
+
+dataloader:
+  train_dir_img: './dataset_demo/BUID/train'
+  train_dir_mask: './dataset_demo/BUID/train_labels'
+  valid_dir_img: './dataset_demo/BUID/valid'
+  valid_dir_mask: './dataset_demo/BUID/valid_labels'
+  test_dir_img: './dataset_demo/BUID/test'
+  test_dir_mask: './dataset_demo/BUID/test_labels'
+  have_label: './dataset_demo/BUID/have_label.txt'
+  non_label: './dataset_demo/BUID/non_label.txt'
