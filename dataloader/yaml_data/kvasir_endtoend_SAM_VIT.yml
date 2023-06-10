@@ -1,0 +1,24 @@
+base:
+  dataset_name: kvasir
+  gpu_id: '3'
+  original_checkpoint: 'vissl-1M-graph-match' # Original checkpoint from segment-anything project
+  best_valid_model_checkpoint: './working_dir/checkpoint'
+  image_shape: 224
+
+train:
+  train_batch_size: 32
+  valid_batch_size: 1
+  test_batch_size: 1
+  optimizer: 'adam'
+  learning_rate: 0.0001
+  num_epochs: 20
+
+dataloader:
+  train_dir_img: './dataset_demo/Kvasir/train'
+  train_dir_mask: './dataset_demo/Kvasir/train_labels'
+  valid_dir_img: './dataset_demo/Kvasir/valid'
+  valid_dir_mask: './dataset_demo/Kvasir/valid_labels'
+  test_dir_img: './dataset_demo/Kvasir/test'
+  test_dir_mask: './dataset_demo/Kvasir/test_labels'
+  have_label: './dataset_demo/Kvasir/have_label.txt'
+  non_label: './dataset_demo/Kvasir/non_label.txt'
