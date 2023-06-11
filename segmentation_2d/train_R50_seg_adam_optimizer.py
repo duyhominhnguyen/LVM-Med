@@ -187,9 +187,9 @@ def train_net(net,
     return test_dice, test_iou, test_dice_last, test_iou_last
 
 
-if __name__ == '__main__':
-    yml_args = parse_config()
-    cfg = load_config(yml_args.config)
+#if __name__ == '__main__':
+def train_2d_R50(cfg):
+    
     logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
     cuda_string = 'cuda:' + cfg.base.gpu_id
     device = torch.device(cuda_string if torch.cuda.is_available() else 'cpu')

@@ -20,7 +20,6 @@ from utils.func import (
 from evaluate import evaluate, evaluate_3d_iou
 #from models.segmentation import UNet
 import segmentation_models_pytorch as smp
-from unet_vit import vit_encoder_b, TransUNet
 import numpy as np
 
 num_classes = 2
@@ -38,8 +37,8 @@ def train_net(net,
               img_scale = (224, 224),
               amp: bool = True,
               out_dir : str= './checkpoint/'):
+
     # 1. Create dataset
-    
     train_dir_img = Path(cfg.dataloader.train_dir_img)
     train_dir_mask = Path(cfg.dataloader.train_dir_mask)
     val_dir_img = Path(cfg.dataloader.valid_dir_img)
@@ -87,11 +86,11 @@ def train_net(net,
     ''')
 
     # 4. Set up the optimizer, the loss, the learning rate scheduler and the loss scaling for AMP
+    
     # optimizer = optim.RMSprop(net.parameters(), lr=learning_rate, weight_decay=1e-8, momentum=0.9)
     optimizer = optim.Adam(net.parameters(), lr=learning_rate, betas=(cfg.train.beta1, cfg.train.beta2), eps=1e-08, weight_decay=cfg.train.weight_decay)
     # optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=0.9, weight_decay=1e-8)
     # scheduler = ExponentialLR(optimizer, gamma=1.11)
-    print(learning_rate)
     # optimizer= optim.Adam(net.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
 
     # scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'max', patience=2)  # goal: maximize Dice score
@@ -188,9 +187,9 @@ def train_net(net,
     return test_dice, test_iou, test_dice_last, test_iou_last
 
 
-if __name__ == '__main__':
-    yml_args = parse_config()
-    cfg = load_config(yml_args.config)
+#if __name__ == '__main__':
+def train_3d_R50(cfg):
+    
     logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
     cuda_string = 'cuda:' + cfg.base.gpu_id
     device = torch.device(cuda_string if torch.cuda.is_available() else 'cpu')
@@ -211,20 +210,11 @@ if __name__ == '__main__':
         for trial in range(3):
             print ("----"*3)
             if cfg.base.original_checkpoint == "scratch":
-                net = TransUNet(
-                          in_channels=3,
-                          out_channels=96,
-                          class_num=num_classes,
-                          pretrained = None,
-                          patch_dim = 14)
+                net = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=num_classes)
             else:
                 print ("Using pre-trained models from", cfg.base.original_checkpoint)
-                net = TransUNet(
-                          in_channels=3,
-                          out_channels=96,
-                          class_num=num_classes,
-                          pretrained = cfg.base.original_checkpoint,
-                          patch_dim = 14)
+                net = smp.Unet(encoder_name="resnet50", encoder_weights=cfg.base.original_checkpoint, 
+                               in_channels=3, classes=num_classes)
 
            
             net.to(device=device)

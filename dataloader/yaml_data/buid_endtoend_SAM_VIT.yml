@@ -1,4 +1,8 @@
 base:
+  is_2D: 1
+  is_3D: 0
+  is_R50: 0
+  is_SAMVIT: 1
   dataset_name: buidnewprocess
   gpu_id: '3'
   original_checkpoint: 'ssl_large' # Original checkpoint from segment-anything project
