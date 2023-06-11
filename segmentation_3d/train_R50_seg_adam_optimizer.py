@@ -22,7 +22,7 @@ from evaluate import evaluate, evaluate_3d_iou
 import segmentation_models_pytorch as smp
 import numpy as np
 
-num_classes = 2
+num_classes = 8
 np.random.seed(42)
 
 def train_net(net,
@@ -139,11 +139,12 @@ def train_net(net,
                 if global_step % (n_train // (1 * train_batch_size)) == 0:
                     
                     val_dice_score, val_iou_score = evaluate(net, val_loader, device, 1)
+                    val_3d_iou_score = evaluate_3d_iou(net, val_dataset, device, 1)
                     
                     test_dice_score, test_iou_score = evaluate(net, test_loader, device, 1)
-                    
+                    test_3d_iou_score = evaluate_3d_iou(net, test_dataset, device, 1)
 
-                    val_score = val_dice_score
+                    val_score = val_3d_iou_score
 
                     # scheduler.step(val_dice_score)
                     if (val_score > best_value):
@@ -151,18 +152,18 @@ def train_net(net,
                         logging.info("New best iou score: {} at epochs {}".format(best_value, epoch+1))
                         torch.save(net.state_dict(), str(dir_checkpoint/'checkpoint_{}_{}_best.pth'.format(cfg.base.dataset_name, cfg.base.original_checkpoint)))
 
-                    logging.info('Validation Dice score: {}, IoU score {}'.format(val_dice_score, val_iou_score))
-                    logging.info('Testing Dice score: {}, IoU score {}'.format(test_dice_score, test_iou_score))
+                    logging.info('Validation Dice score: {}, IoU score {}, IoU 3d score {}'.format(val_dice_score, val_iou_score, val_3d_iou_score))
+                    logging.info('Testing Dice score: {}, IoU score {}, IoU 3d score {}'.format(test_dice_score, test_iou_score, test_3d_iou_score))
                     
         if epoch + 1 == epochs:
             val_dice_score, val_iou_score = evaluate(net, val_loader, device, 1)
-            
+            val_3d_iou_score = evaluate_3d_iou(net, val_dataset, device, 1)
 
             test_dice_score, test_iou_score = evaluate(net, test_loader, device, 1)
-            
+            test_3d_iou_score = evaluate_3d_iou(net, test_dataset, device, 1)
 
-            logging.info('Validation Dice score: {}, IoU score {}'.format(val_dice_score, val_iou_score))
-            logging.info('Testing Dice score: {}, IoU score {}'.format(test_dice_score, test_iou_score))
+            logging.info('Validation Dice score: {}, IoU score {}, IoU 3d score {}'.format(val_dice_score, val_iou_score, val_3d_iou_score))
+            logging.info('Testing Dice score: {}, IoU score {}, IoU 3d score {}'.format(test_dice_score, test_iou_score, test_3d_iou_score))
 
         if save_checkpoint:
             # Path(dir_checkpoint).mkdir(parents=True, exist_ok=True)
@@ -176,15 +177,16 @@ def train_net(net,
     logging.info("Loading best model on validation")
     net.load_state_dict(torch.load(str(dir_checkpoint/'checkpoint_{}_{}_best.pth'.format(cfg.base.dataset_name, cfg.base.original_checkpoint))))
     test_dice, test_iou = evaluate(net, test_loader, device, 1)
- 
-    logging.info("Test dice score {}, IoU score {}".format(test_dice, test_iou))
+    test_3d_iou = evaluate_3d_iou(net, test_dataset, device, 1)
+    logging.info("Test dice score {}, IoU score {}, 3d IoU {}".format(test_dice, test_iou, test_3d_iou))
 
     logging.info("Loading model at last epochs %d" %epochs)
     net.load_state_dict(torch.load(str(dir_checkpoint/'checkpoint_epoch{}.pth'.format(epochs))))
     test_dice_last, test_iou_last = evaluate(net, test_loader, device, 1)
-    logging.info("Test dice score {}, IoU score {}".format(test_dice_last, test_iou_last))
+    test_3d_iou_last = evaluate_3d_iou(net, test_dataset, device, 1)
+    logging.info("Test dice score {}, IoU score {}, 3d IoU {}".format(test_dice_last, test_iou_last, test_3d_iou_last))
 
-    return test_dice, test_iou, test_dice_last, test_iou_last
+    return test_dice, test_iou, test_3d_iou, test_dice_last, test_iou_last, test_3d_iou_last
 
 
 #if __name__ == '__main__':
@@ -205,7 +207,8 @@ def train_3d_R50(cfg):
         _2d_ious = []
         _2d_dices_last = []
         _2d_ious_last = []
-
+        _3d_ious = []
+        _3d_ious_last = []
 
         for trial in range(3):
             print ("----"*3)
@@ -220,7 +223,7 @@ def train_3d_R50(cfg):
             net.to(device=device)
 
             print("Trial", trial + 1)
-            _2d_dice, _2d_iou, _2d_dice_last, _2d_iou_last = train_net(net=net, cfg=cfg,
+            _2d_dice, _2d_iou, _3d_iou, _2d_dice_last, _2d_iou_last, _3d_iou_last = train_net(net=net, cfg=cfg,
                     epochs=cfg.train.num_epochs,
                     train_batch_size=cfg.train.train_batch_size,
                     val_batch_size=cfg.train.valid_batch_size,
@@ -232,17 +235,21 @@ def train_3d_R50(cfg):
                     out_dir= cfg.base.best_valid_model_checkpoint)
             _2d_dices.append(_2d_dice.item())
             _2d_ious.append(_2d_iou.item())
+            _3d_ious.append(_3d_iou.item())
             _2d_dices_last.append(_2d_dice_last.item())
             _2d_ious_last.append(_2d_iou_last.item())
+            _3d_ious_last.append(_3d_iou_last.item())
+
 
         print ("Average performance on best valid set")
         print("2d dice {}, mean {}, std {}".format(_2d_dices, np.mean(_2d_dices), np.std(_2d_dices)))
         print("2d iou {}, mean {}, std {}".format(_2d_ious, np.mean(_2d_ious), np.std(_2d_ious)))
-        
+        print("3d iou {}, mean {}, std {}".format(_3d_ious, np.mean(_3d_ious), np.std(_3d_ious)))
 
         print ("Average performance on the last epoch")
         print("2d dice {}, mean {}, std {}".format(_2d_dices_last, np.mean(_2d_dices_last), np.std(_2d_dices_last)))
         print("2d iou {}, mean {}, std {}".format(_2d_ious_last, np.mean(_2d_ious_last), np.std(_2d_ious_last)))
+        print("3d iou {}, mean {}, std {}".format(_3d_ious_last, np.mean(_3d_ious_last), np.std(_3d_ious_last)))
         
 
     except KeyboardInterrupt:

@@ -73,6 +73,10 @@ class SegmentationDataset_train(Dataset):
             non_label_lines = np.array(non_label_lines, dtype= object)
             have_label_lines = np.array(have_label_lines, dtype= object)
             self.ids = np.concatenate([non_label_lines[choose_non_lable_lines], have_label_lines], axis= 0)
+        # self.ids = os.listdir(images_dir) #[splitext(file)[0] for file in listdir(images_dir) if not file.startswith('.') and image_type in file]
+        # print(len(self.ids))
+        # if datasetname == "las_mri":
+        #     self.ids = [f for f in self.ids if image_type in f]
         if len(self.ids) == 0:
             raise RuntimeError(f'No input file found in {self.images_dir}, make sure you put your images there')
         logging.info(f'Creating dataset with {len(self.ids)} examples')
@@ -160,17 +164,20 @@ class SegmentationDataset_train(Dataset):
         for _, items in groupby(sorted_ids, key=keyf):
             images = []
             masks = []
+            masks_ete = []
             bboxes = []
             for idx in items:
                 d = self.__getitem__(idx)
                 images.append(d['image'])
                 masks.append(d['mask'])
+                masks_ete.append(d['mask_ete'])
                 bboxes.append(d['bboxes'])
             # store third dimension in image channels
             images = torch.stack(images, dim=0)
             masks = torch.stack(masks, dim=0)
+            masks_ete = torch.stack(masks_ete, dim=0)
             bboxes = torch.stack(bboxes, dim=0)
-            _3d_data = {'image': images, 'mask': masks, 'bboxes': bboxes}
+            _3d_data = {'image': images, 'mask': masks, 'mask_ete': masks_ete, 'bboxes': bboxes}
             yield _3d_data
             
             
@@ -284,17 +291,20 @@ class SegmentationDataset(Dataset):
         for _, items in groupby(sorted_ids, key=keyf):
             images = []
             masks = []
+            masks_ete = []
             bboxes = []
             for idx in items:
                 d = self.__getitem__(idx)
                 images.append(d['image'])
                 masks.append(d['mask'])
+                masks_ete.append(d['mask_ete'])
                 bboxes.append(d['bboxes'])
             # store third dimension in image channels
             images = torch.stack(images, dim=0)
             masks = torch.stack(masks, dim=0)
+            masks_ete = torch.stack(masks_ete, dim=0)
             bboxes = torch.stack(bboxes, dim=0)
-            _3d_data = {'image': images, 'mask': masks, 'bboxes': bboxes}
+            _3d_data = {'image': images, 'mask': masks, 'mask_ete': masks_ete, 'bboxes': bboxes}
             yield _3d_data
 
 class AugmentedSegmentationDataset(Dataset):
