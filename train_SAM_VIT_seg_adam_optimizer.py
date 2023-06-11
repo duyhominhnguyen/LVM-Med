@@ -12,7 +12,7 @@ from tqdm import tqdm
 from torch.optim.lr_scheduler import ExponentialLR
 import os
 from dataloader.dataset import SegmentationDataset_train, SegmentationDataset
-from utils_endtoend import dice_loss
+from utils.endtoend import dice_loss
 from utils.func import (
     parse_config,
     load_config

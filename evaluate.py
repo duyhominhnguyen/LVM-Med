@@ -2,7 +2,7 @@ import torch
 import torch.nn.functional as F
 from tqdm import tqdm
 
-from utils_endtoend import multiclass_dice_coeff, multiclass_iou
+from utils.endtoend import multiclass_dice_coeff, multiclass_iou
 num_classes = 8
 
 def evaluate(net, dataloader, device, eval_class):

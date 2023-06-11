@@ -12,7 +12,7 @@ from tqdm import tqdm
 from torch.optim.lr_scheduler import ExponentialLR
 import os
 from dataloader.dataset import SegmentationDataset_train, SegmentationDataset
-from utils_endtoend import dice_loss
+from utils.endtoend import dice_loss
 from utils.func import (
     parse_config,
     load_config
@@ -37,8 +37,8 @@ def train_net(net,
               img_scale = (224, 224),
               amp: bool = True,
               out_dir : str= './checkpoint/'):
+
     # 1. Create dataset
-    
     train_dir_img = Path(cfg.dataloader.train_dir_img)
     train_dir_mask = Path(cfg.dataloader.train_dir_mask)
     val_dir_img = Path(cfg.dataloader.valid_dir_img)
@@ -86,11 +86,11 @@ def train_net(net,
     ''')
 
     # 4. Set up the optimizer, the loss, the learning rate scheduler and the loss scaling for AMP
+    
     # optimizer = optim.RMSprop(net.parameters(), lr=learning_rate, weight_decay=1e-8, momentum=0.9)
     optimizer = optim.Adam(net.parameters(), lr=learning_rate, betas=(0.9, 0.999), eps=1e-08, weight_decay=0)
     # optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=0.9, weight_decay=1e-8)
     # scheduler = ExponentialLR(optimizer, gamma=1.11)
-    print(learning_rate)
     # optimizer= optim.Adam(net.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
 
     # scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'max', patience=2)  # goal: maximize Dice score

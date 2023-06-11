@@ -73,10 +73,6 @@ class SegmentationDataset_train(Dataset):
             non_label_lines = np.array(non_label_lines, dtype= object)
             have_label_lines = np.array(have_label_lines, dtype= object)
             self.ids = np.concatenate([non_label_lines[choose_non_lable_lines], have_label_lines], axis= 0)
-        # self.ids = os.listdir(images_dir) #[splitext(file)[0] for file in listdir(images_dir) if not file.startswith('.') and image_type in file]
-        # print(len(self.ids))
-        # if datasetname == "las_mri":
-        #     self.ids = [f for f in self.ids if image_type in f]
         if len(self.ids) == 0:
             raise RuntimeError(f'No input file found in {self.images_dir}, make sure you put your images there')
         logging.info(f'Creating dataset with {len(self.ids)} examples')
