@@ -12,6 +12,9 @@ train:
   optimizer: 'adam'
   learning_rate: 0.0001
   num_epochs: 20
+  beta1: 0.9
+  beta2: 0.999
+  weight_decay: 0
 
 dataloader:
   train_dir_img: './dataset_demo/Kvasir/train'

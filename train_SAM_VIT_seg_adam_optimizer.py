@@ -20,6 +20,7 @@ from utils.func import (
 from evaluate import evaluate, evaluate_3d_iou
 #from models.segmentation import UNet
 import segmentation_models_pytorch as smp
+from unet_vit import vit_encoder_b, TransUNet
 import numpy as np
 
 num_classes = 2
@@ -87,7 +88,7 @@ def train_net(net,
 
     # 4. Set up the optimizer, the loss, the learning rate scheduler and the loss scaling for AMP
     # optimizer = optim.RMSprop(net.parameters(), lr=learning_rate, weight_decay=1e-8, momentum=0.9)
-    optimizer = optim.Adam(net.parameters(), lr=learning_rate, betas=(0.9, 0.999), eps=1e-08, weight_decay=0)
+    optimizer = optim.Adam(net.parameters(), lr=learning_rate, betas=(cfg.train.beta1, cfg.train.beta2), eps=1e-08, weight_decay=cfg.train.weight_decay)
     # optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=0.9, weight_decay=1e-8)
     # scheduler = ExponentialLR(optimizer, gamma=1.11)
     print(learning_rate)
