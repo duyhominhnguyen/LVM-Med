@@ -10,3 +10,13 @@ python3 medsam.py -c dataloader/yaml_data/buid_sam.yml
 ```bash
 python3 medsam.py -c dataloader/yaml_data/buid_sam.yml -test
 ```
+
+## SSL End-to-End
+### Fine-tune for downstream tasks using resnet 50
+```bash
+python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_R50.yml
+```
+### Fine-tune for downstream tasks using SAM's VIT
+```bash
+python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_SAM_VIT.yml
+```
