@@ -1,0 +1,31 @@
+base:
+  is_2D: 0
+  is_3D: 1
+  is_R50: 1
+  is_SAMVIT: 0
+  dataset_name: las_ct
+  gpu_id: '3'
+  original_checkpoint: 'ssl-graph-match-small' # Original checkpoint from segment-anything project
+  best_valid_model_checkpoint: './working_dir/checkpoint'
+  image_shape: 224
+
+train:
+  train_batch_size: 32
+  valid_batch_size: 1
+  test_batch_size: 1
+  optimizer: 'adam'
+  learning_rate: 0.0001
+  num_epochs: 20
+  beta1: 0.9
+  beta2: 0.999
+  weight_decay: 0
+
+dataloader:
+  train_dir_img: '/home/caduser/Universal_Experiment/MMWHS_CT_Heart/train/' #'./dataset_demo/MMWHS_CT_Heart/train'
+  train_dir_mask: '/home/caduser/Universal_Experiment/MMWHS_CT_Heart/train_labels' #'./dataset_demo/MMWHS_CT_Heart/train_labels'
+  valid_dir_img: '/home/caduser/Universal_Experiment/MMWHS_CT_Heart/valid/' #'./dataset_demo/MMWHS_CT_Heart/valid'
+  valid_dir_mask: '/home/caduser/Universal_Experiment/MMWHS_CT_Heart/valid_labels' #'./dataset_demo/MMWHS_CT_Heart/valid_labels'
+  test_dir_img: '/home/caduser/Universal_Experiment/MMWHS_CT_Heart/test/' #'./dataset_demo/MMWHS_CT_Heart/test'
+  test_dir_mask: '/home/caduser/Universal_Experiment/MMWHS_CT_Heart/test_labels' #'./dataset_demo/MMWHS_CT_Heart/test_labels'
+  have_label: '/home/caduser/KOTORI/downstream_task/have_label.txt' #'./dataset_demo/MMWHS_CT_Heart/have_label.txt'
+  non_label: '/home/caduser/KOTORI/downstream_task/non_label.txt' #'./dataset_demo/MMWHS_CT_Heart/non_label.txt'

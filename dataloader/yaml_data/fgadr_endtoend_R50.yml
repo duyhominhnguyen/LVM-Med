@@ -1,0 +1,19 @@
+base:
+  dataset_name: fgadr
+  gpu_id: '3'
+  original_checkpoint: 'vissl-1M-graph-match' 
+  best_valid_model_checkpoint: './working_dir/checkpoint/'
+  image_shape: 224
+
+train:
+  train_batch_size: 32
+  valid_batch_size: 1
+  test_batch_size: 1
+  optimizer: 'adam'
+  learning_rate: 0.0005
+  num_epochs: 20
+
+dataloader:
+  train_dir_img: '/home/caduser/Foundmed_Experiment/Classification/FGADR/train' #'./dataset_demo/FGADR/train'
+  test_dir_img: '/home/caduser/Foundmed_Experiment/Classification/FGADR/test' #'./dataset_demo/FGADR/test'
+  
