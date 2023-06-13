@@ -256,7 +256,7 @@ if __name__ == "__main__":
     train_batch_size = cfg.train.train_batch_size
     GPUs = cfg.base.gpu_id
     solver_name = cfg.train.optimizer
-    linear_eval = 1
+    linear_eval = cfg.train.linear_eval
     # solver_name = 'sgd'
 
     cuda_string = 'cuda:' + GPUs
