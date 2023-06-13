@@ -22,6 +22,13 @@ def parse_config():
         help='Overwrite file in the save path.'
     )
     parser.add_argument(
+        '-lvm_encoder',
+        '--lvm_med_encoder_path',
+        type=str,
+        default='',
+        help='Path to LVM Med encoder arch'
+    )
+    parser.add_argument(
         '-print_config',
         action='store_true',
         default=False,
