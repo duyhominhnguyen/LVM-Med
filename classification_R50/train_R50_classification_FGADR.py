@@ -238,11 +238,9 @@ def TrainingTesting(cfg, numtry, pretrained_weight_name, device, solver, name_we
 
 
 
-if __name__ == "__main__":
-    yml_args = parse_config()
-    cfg = load_config(yml_args.config)
-
-
+#if __name__ == "__main__":
+def train_FGADR_R50(cfg):
+    
     list_acc = []
 
     # args.pretrained = "vissl-1M-swav"
