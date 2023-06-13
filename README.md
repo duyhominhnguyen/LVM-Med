@@ -32,10 +32,14 @@ python3 medsam.py -c dataloader/yaml_data/buid_sam.yml -test
 ```
 
 ### Prompt-based segmentation with LVM-Med (encoder) + MedSAM for downstream tasks
-The difference in yaml file between LVM-Med + MedSAM and the original MedSAM is just the way you save the trained model. Hence you could either use the MedSAM's yaml file or create a new one, it would make no difference in the final performance.
+The difference in yaml file between LVM-Med + MedSAM and the original MedSAM is just the way you save the trained model. Hence you could either use the MedSAM's yaml file or create a new one, it would make no difference in the final performance.     
+
+For results visualization with LVM-Med as encoder, you could check our examples at [`LVMMed_Encoder_Prompt_Demo.ipynb`](/notebook/LVMMed_Encoder_Prompt_Demo.ipynb)
+
 ```bash
 python3 medsam.py -c dataloader/yaml_data/buid_lvm_med_sam.yml -lvm_encoder workdir/pretrained/vit_b_largescale_dim256.pth
 ```
+
 
 ### LVM-Med 
 #### Fine-tune for downstream tasks using ResNet-50
