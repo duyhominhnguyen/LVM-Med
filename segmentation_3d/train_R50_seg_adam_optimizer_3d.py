@@ -188,9 +188,23 @@ def train_net(net,
 
     return test_dice, test_iou, test_3d_iou, test_dice_last, test_iou_last, test_3d_iou_last
 
-
+def eval(cfg, out_dir, net, device, img_scale):
+    test_dir_img = Path(cfg.dataloader.test_dir_img)
+    test_dir_mask = Path(cfg.dataloader.test_dir_mask)
+    test_dataset = SegmentationDataset(name_dataset=cfg.base.dataset_name, images_dir = test_dir_img, masks_dir= test_dir_mask, scale = img_scale)
+    loader_args = dict(num_workers=10, pin_memory=True)
+    test_loader = DataLoader(test_dataset, shuffle=False, drop_last=True, **loader_args)
+    dir_checkpoint = Path(out_dir)
+    
+    logging.info("Evalutating on test set")
+    logging.info("Loading best model on validation")
+    net.load_state_dict(torch.load(str(dir_checkpoint/'checkpoint_{}_{}_best.pth'.format(cfg.base.dataset_name, cfg.base.original_checkpoint))))
+    test_dice, test_iou = evaluate(net, test_loader, device, 1)
+    test_3d_iou = evaluate_3d_iou(net, test_dataset, device, 1)
+    logging.info("Test dice score {}, IoU score {}, 3d IoU {}".format(test_dice, test_iou, test_3d_iou))
+    
 #if __name__ == '__main__':
-def train_3d_R50(cfg):
+def train_3d_R50(yml_args, cfg):
     
     logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
     cuda_string = 'cuda:' + cfg.base.gpu_id
@@ -209,48 +223,59 @@ def train_3d_R50(cfg):
         _2d_ious_last = []
         _3d_ious = []
         _3d_ious_last = []
+        if not yml_args.use_test_mode:
+            for trial in range(3):
+                print ("----"*3)
+                if cfg.base.original_checkpoint == "scratch":
+                    net = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=num_classes)
+                else:
+                    print ("Using pre-trained models from", cfg.base.original_checkpoint)
+                    net = smp.Unet(encoder_name="resnet50", encoder_weights=cfg.base.original_checkpoint, 
+                                   in_channels=3, classes=num_classes)
 
-        for trial in range(3):
+
+                net.to(device=device)
+
+                print("Trial", trial + 1)
+                _2d_dice, _2d_iou, _3d_iou, _2d_dice_last, _2d_iou_last, _3d_iou_last = train_net(net=net, cfg=cfg,
+                        epochs=cfg.train.num_epochs,
+                        train_batch_size=cfg.train.train_batch_size,
+                        val_batch_size=cfg.train.valid_batch_size,
+                        learning_rate=cfg.train.learning_rate,
+                        device=device,
+                        val_percent=10.0 / 100,
+                        img_scale = (cfg.base.image_shape, cfg.base.image_shape),
+                        amp=False,
+                        out_dir= cfg.base.best_valid_model_checkpoint)
+                _2d_dices.append(_2d_dice.item())
+                _2d_ious.append(_2d_iou.item())
+                _3d_ious.append(_3d_iou.item())
+                _2d_dices_last.append(_2d_dice_last.item())
+                _2d_ious_last.append(_2d_iou_last.item())
+                _3d_ious_last.append(_3d_iou_last.item())
+
+
+            print ("Average performance on best valid set")
+            print("2d dice {}, mean {}, std {}".format(_2d_dices, np.mean(_2d_dices), np.std(_2d_dices)))
+            print("2d iou {}, mean {}, std {}".format(_2d_ious, np.mean(_2d_ious), np.std(_2d_ious)))
+            print("3d iou {}, mean {}, std {}".format(_3d_ious, np.mean(_3d_ious), np.std(_3d_ious)))
+
+            print ("Average performance on the last epoch")
+            print("2d dice {}, mean {}, std {}".format(_2d_dices_last, np.mean(_2d_dices_last), np.std(_2d_dices_last)))
+            print("2d iou {}, mean {}, std {}".format(_2d_ious_last, np.mean(_2d_ious_last), np.std(_2d_ious_last)))
+            print("3d iou {}, mean {}, std {}".format(_3d_ious_last, np.mean(_3d_ious_last), np.std(_3d_ious_last)))
+        else:
             print ("----"*3)
             if cfg.base.original_checkpoint == "scratch":
-                net = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=num_classes)
+                    net = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=num_classes)
             else:
                 print ("Using pre-trained models from", cfg.base.original_checkpoint)
                 net = smp.Unet(encoder_name="resnet50", encoder_weights=cfg.base.original_checkpoint, 
                                in_channels=3, classes=num_classes)
 
-           
+
             net.to(device=device)
-
-            print("Trial", trial + 1)
-            _2d_dice, _2d_iou, _3d_iou, _2d_dice_last, _2d_iou_last, _3d_iou_last = train_net(net=net, cfg=cfg,
-                    epochs=cfg.train.num_epochs,
-                    train_batch_size=cfg.train.train_batch_size,
-                    val_batch_size=cfg.train.valid_batch_size,
-                    learning_rate=cfg.train.learning_rate,
-                    device=device,
-                    val_percent=10.0 / 100,
-                    img_scale = (cfg.base.image_shape, cfg.base.image_shape),
-                    amp=False,
-                    out_dir= cfg.base.best_valid_model_checkpoint)
-            _2d_dices.append(_2d_dice.item())
-            _2d_ious.append(_2d_iou.item())
-            _3d_ious.append(_3d_iou.item())
-            _2d_dices_last.append(_2d_dice_last.item())
-            _2d_ious_last.append(_2d_iou_last.item())
-            _3d_ious_last.append(_3d_iou_last.item())
-
-
-        print ("Average performance on best valid set")
-        print("2d dice {}, mean {}, std {}".format(_2d_dices, np.mean(_2d_dices), np.std(_2d_dices)))
-        print("2d iou {}, mean {}, std {}".format(_2d_ious, np.mean(_2d_ious), np.std(_2d_ious)))
-        print("3d iou {}, mean {}, std {}".format(_3d_ious, np.mean(_3d_ious), np.std(_3d_ious)))
-
-        print ("Average performance on the last epoch")
-        print("2d dice {}, mean {}, std {}".format(_2d_dices_last, np.mean(_2d_dices_last), np.std(_2d_dices_last)))
-        print("2d iou {}, mean {}, std {}".format(_2d_ious_last, np.mean(_2d_ious_last), np.std(_2d_ious_last)))
-        print("3d iou {}, mean {}, std {}".format(_3d_ious_last, np.mean(_3d_ious_last), np.std(_3d_ious_last)))
-        
+            eval(cfg = cfg, out_dir = cfg.base.best_valid_model_checkpoint, net = net, device = device, img_scale = (cfg.base.image_shape, cfg.base.image_shape))
 
     except KeyboardInterrupt:
         torch.save(net.state_dict(), 'INTERRUPTED.pth')

@@ -13,11 +13,11 @@ if __name__=="__main__":
     assert cfg.base.is_2D + cfg.base.is_3D == 1
     if cfg.base.is_2D:
         if cfg.base.is_R50:
-            train_2d_R50(cfg)
+            train_2d_R50(yml_args, cfg)
         if cfg.base.is_SAMVIT:
-            train_2d_SAMVIT(cfg)
+            train_2d_SAMVIT(yml_args, cfg)
     if cfg.base.is_3D:
         if cfg.base.is_R50:
-            train_3d_R50(cfg)
+            train_3d_R50(yml_args, cfg)
         if cfg.base.is_SAMVIT:
-            train_3d_SAMVIT(cfg)
+            train_3d_SAMVIT(yml_args, cfg)
