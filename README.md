@@ -11,14 +11,26 @@ Release LMV-Med pre-trained models. We demonstrate downstream tasks on 2D-3D seg
   </tr>
 </table>
 
-## 2. How to reproduce our results ?
-### Project setup
+## 2. Project setup
 ```bash
 git clone https://github.com/duyhominhnguyen/LVM-Med
 cd LVM-Med
 conda env create -f lvm_med.yml
 conda activate lvm_med
 ```
+
+## 3. Prepare dataset
+To get as close results as your work as possible, you could prepare dataset the same way as we do:
+### Prepare dataset
+```bash
+python prepare_dataset.py -ds [dataset_name]
+```
+such that: `dataset_name` is the name of dataset that you would like to prepare. 
+
+Currently support: `Kvasir`, `BUID`, `FGADR`, `MMWHS_MR_Heart` and `MMWHS_CT_Heart`
+
+
+## 4. How to reproduce our results ?
 
 ### Prompt-based segmentation with Fine-tune SAM (MedSAM) for downstream tasks
 You could also see the examples of [`Prompt_Demo.ipynb`](/notebook/Prompt_Demo.ipynb) for results visualization using prompt-based MedSAM.
