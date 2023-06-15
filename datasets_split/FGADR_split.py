@@ -17,20 +17,22 @@ def FGADR_split():
     a = pickle.load(f)
     a_key = a.keys()
     B = ["train", "test"]
-    for i in B:
+    C = ["Training", "Testing"]
+    for index, i in enumerate(B):
         print(i)
         print(len(a[i]))
         folder_type = os.path.join(path, i)
-        if os.path.exists(folder_type):
-            shutil.rmtree(os.path.join(path, i))
-        os.mkdir(os.path.join(path, i))
+        if os.path.exists(folder_type.replace(i, C[index])):
+            shutil.rmtree(os.path.join(path, C[index]))
+        os.mkdir(os.path.join(path, C[index]))
         for j in a[i]:
             folder_class = os.path.join(folder_type, str(j[1]))
-            if not os.path.exists(folder_class):
-                os.mkdir(folder_class)
+            if not os.path.exists(folder_class.replace(i, C[index])):
+                os.mkdir(folder_class.replace(i, C[index]))
             file = j[0].replace("/mnt/sda/haal02-data/FGADR-Seg-Set", "./dataset_demo/FGADR")
             img = cv2.imread(file)
             img = resize(img, (512, 512), order=0, preserve_range=True, anti_aliasing=False).astype('uint8')
             #/home/caduser/Foundmed_Experiment/Classification/FGADR/Seg-set/Original_Images/0001_2.png
             name_img = file.split("/")[-1]
-            cv2.imwrite(os.path.join(folder_class, name_img), img)
+            #print(os.path.join(folder_class.replace(i, C[index])))
+            cv2.imwrite(os.path.join(folder_class.replace(i, C[index]), name_img), img)
