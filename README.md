@@ -20,17 +20,20 @@ conda activate lvm_med
 ```
 
 ## 3. Prepare dataset
-To get as close results as your work as possible, you could prepare dataset the same way as we do:
-### Prepare dataset
+First you should download the respective dataset that you need to run to the [`dataset_demo`](/dataset_demo/) folder. To get as close results as your work as possible, you could prepare some of our specific dataset (which are not pre-distributed) the same way as we do:
 ```bash
 python prepare_dataset.py -ds [dataset_name]
 ```
-such that: `dataset_name` is the name of dataset that you would like to prepare. 
+such that: `dataset_name` is the name of dataset that you would like to prepare. After that, you should change paths to your loaded dataset on our pre-defined yaml file in [`dataloader/yaml_data`](/dataloader/yaml_data/).
 
-Currently support: `Kvasir`, `BUID`, `FGADR`, `MMWHS_MR_Heart` and `MMWHS_CT_Heart`
-
+Currently support for `Kvasir`, `BUID`, `FGADR`, `MMWHS_MR_Heart` and `MMWHS_CT_Heart`
 
 ## 4. How to reproduce our results ?
+
+### Zero-shot prompt-based segmentation with Segment Anything Model (SAM) for downstream tasks
+```bash
+python3 zero_shot_segmentation.py -c dataloader/yaml_data/buid_sam.yml
+```
 
 ### Prompt-based segmentation with Fine-tune SAM (MedSAM) for downstream tasks
 You could also see the examples of [`Prompt_Demo.ipynb`](/notebook/Prompt_Demo.ipynb) for results visualization using prompt-based MedSAM.
@@ -51,7 +54,6 @@ For results visualization with LVM-Med as encoder, you could check our examples 
 ```bash
 python3 medsam.py -c dataloader/yaml_data/buid_lvm_med_sam.yml -lvm_encoder workdir/pretrained/vit_b_largescale_dim256.pth
 ```
-
 
 ### LVM-Med 
 #### Fine-tune for downstream tasks using ResNet-50

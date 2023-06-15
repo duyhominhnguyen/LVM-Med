@@ -1,8 +1,8 @@
 from segmentation_2d.MedSAM_2d import medsam_2d
-from segmentation_2d.LVM_Med_SAM_2d import lvm_medsam_2d
+from segmentation_2d.LVMMed_SAM_2d import lvm_medsam_2d
 
 from segmentation_3d.MedSAM_3d import medsam_3d
-from segmentation_3d.LVM_Med_SAM_3d import lvm_medsam_3d
+from segmentation_3d.LVMMed_SAM_3d import lvm_medsam_3d
 
 from utils.func import (
     parse_config,
