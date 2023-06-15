@@ -19,7 +19,7 @@ from utils.func import (
 )
 from evaluate import evaluate, evaluate_3d_iou
 #from models.segmentation import UNet
-import segmentation_models_pytorch as smp
+# import segmentation_models_pytorch as smp
 from model.unet_vit import vit_encoder_b, TransUNet
 import numpy as np
 
