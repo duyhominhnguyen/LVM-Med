@@ -1,0 +1,32 @@
+base:
+  is_2D: 0
+  is_3D: 1
+  is_R50: 1
+  is_SAMVIT: 0
+  dataset_name: las_mri
+  gpu_id: '4'
+  original_checkpoint: 'vissl-1M-graph-match' # Original checkpoint from segment-anything project
+  best_valid_model_checkpoint: './working_dir/checkpoint/MMWHS_MR_R50'
+  image_shape: 224
+
+train:
+  train_batch_size: 64
+  valid_batch_size: 32
+  test_batch_size: 1
+  optimizer: 'adam'
+  learning_rate: 0.0015
+  num_epochs: 30
+  beta1: 0.9
+  beta2: 0.999
+  weight_decay: 0
+  scheduler: 1
+
+dataloader:
+  train_dir_img: '/home/caduser/Universal_Experiment/MMWHS_MR_Heart/train/' #'./dataset_demo/MMWHS_MR_Heart/train'
+  train_dir_mask: '/home/caduser/Universal_Experiment/MMWHS_MR_Heart/train_labels' #'./dataset_demo/MMWHS_MR_Heart/train_labels'
+  valid_dir_img: '/home/caduser/Universal_Experiment/MMWHS_MR_Heart/valid/' #'./dataset_demo/MMWHS_MR_Heart/valid'
+  valid_dir_mask: '/home/caduser/Universal_Experiment/MMWHS_MR_Heart/valid_labels' #'./dataset_demo/MMWHS_MR_Heart/valid_labels'
+  test_dir_img: '/home/caduser/Universal_Experiment/MMWHS_MR_Heart/test/' #'./dataset_demo/MMWHS_MR_Heart/test'
+  test_dir_mask: '/home/caduser/Universal_Experiment/MMWHS_MR_Heart/test_labels' #'./dataset_demo/MMWHS_MR_Heart/test_labels'
+  have_label: '/home/caduser/KOTORI/downstream_task/have_labelMR_new.txt' #'./dataset_demo/MMWHS_MR_Heart/have_label.txt'
+  non_label: '/home/caduser/KOTORI/downstream_task/non_labelMR_new.txt' #'./dataset_demo/MMWHS_MR_Heart/non_label.txt'

@@ -4,21 +4,22 @@ base:
   is_R50: 1
   is_SAMVIT: 0
   dataset_name: kvasir
-  gpu_id: '3'
+  gpu_id: '1'
   original_checkpoint: 'vissl-1M-graph-match' # Original checkpoint from segment-anything project
-  best_valid_model_checkpoint: './working_dir/checkpoint'
+  best_valid_model_checkpoint: './working_dir/checkpoint/Kvasir_R50'
   image_shape: 224
 
 train:
-  train_batch_size: 32
+  train_batch_size: 64
   valid_batch_size: 1
   test_batch_size: 1
   optimizer: 'adam'
-  learning_rate: 0.0001
-  num_epochs: 20
+  learning_rate: 0.001
+  num_epochs: 35
   beta1: 0.9
   beta2: 0.999
   weight_decay: 0
+  scheduler: 0
 
 dataloader:
   train_dir_img: './dataset_demo/Kvasir/train'
