@@ -1,7 +1,5 @@
 from segmentation_2d.train_R50_seg_adam_optimizer_2d import train_2d_R50
-from segmentation_2d.train_SAM_VIT_seg_adam_optimizer_2d import train_2d_SAMVIT
 from segmentation_3d.train_R50_seg_adam_optimizer_3d import train_3d_R50
-from segmentation_3d.train_SAM_VIT_seg_adam_optimizer_3d import train_3d_SAMVIT
 from utils.func import (
     parse_config,
     load_config

@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader, random_split
 from tqdm import tqdm
 from torch.optim.lr_scheduler import ExponentialLR
 import os
-from dataloader.dataset import SegmentationDataset_train, SegmentationDataset
+from dataloader.dataset_ete import SegmentationDataset_train, SegmentationDataset
 from utils.endtoend import dice_loss
 from utils.func import (
     parse_config,
@@ -21,12 +21,15 @@ from evaluate import evaluate, evaluate_3d_iou
 #from models.segmentation import UNet
 import segmentation_models_pytorch as smp
 import numpy as np
-
+import random
 num_classes = 2
 np.random.seed(42)
+random.seed(42)
+torch.manual_seed(42)
 
 def train_net(net,
               cfg,
+              trial,
               device,
               epochs: int = 30,
               train_batch_size: int = 128,
@@ -89,6 +92,9 @@ def train_net(net,
     
     # optimizer = optim.RMSprop(net.parameters(), lr=learning_rate, weight_decay=1e-8, momentum=0.9)
     optimizer = optim.Adam(net.parameters(), lr=learning_rate, betas=(cfg.train.beta1, cfg.train.beta2), eps=1e-08, weight_decay=cfg.train.weight_decay)
+    if cfg.train.scheduler:
+        print("Use scheduler")
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=10, eta_min=1e-05)
     # optimizer = optim.SGD(net.parameters(), lr=learning_rate, momentum=0.9, weight_decay=1e-8)
     # scheduler = ExponentialLR(optimizer, gamma=1.11)
     # optimizer= optim.Adam(net.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
@@ -134,47 +140,34 @@ def train_net(net,
                     'epoch': epoch
                 })
                 pbar.set_postfix(**{'loss (batch)': loss.item()})
-
+                
+                if cfg.train.scheduler:
+                    scheduler.step()
                 # Evaluation round
                 if global_step % (n_train // (1 * train_batch_size)) == 0:
-                    
                     val_dice_score, val_iou_score = evaluate(net, val_loader, device, 1)
-                    
-                    test_dice_score, test_iou_score = evaluate(net, test_loader, device, 1)
-                    
-
                     val_score = val_dice_score
 
-                    # scheduler.step(val_dice_score)
                     if (val_score > best_value):
                         best_value = val_score
                         logging.info("New best iou score: {} at epochs {}".format(best_value, epoch+1))
-                        torch.save(net.state_dict(), str(dir_checkpoint/'checkpoint_{}_{}_best.pth'.format(cfg.base.dataset_name, cfg.base.original_checkpoint)))
+                        torch.save(net.state_dict(), str(dir_checkpoint/'checkpoint_{}_{}_best_{}.pth'.format(cfg.base.dataset_name, cfg.base.original_checkpoint, str(trial))))
 
                     logging.info('Validation Dice score: {}, IoU score {}'.format(val_dice_score, val_iou_score))
-                    logging.info('Testing Dice score: {}, IoU score {}'.format(test_dice_score, test_iou_score))
                     
         if epoch + 1 == epochs:
             val_dice_score, val_iou_score = evaluate(net, val_loader, device, 1)
-            
-
-            test_dice_score, test_iou_score = evaluate(net, test_loader, device, 1)
-            
-
             logging.info('Validation Dice score: {}, IoU score {}'.format(val_dice_score, val_iou_score))
-            logging.info('Testing Dice score: {}, IoU score {}'.format(test_dice_score, test_iou_score))
-
+            
         if save_checkpoint:
-            # Path(dir_checkpoint).mkdir(parents=True, exist_ok=True)
             torch.save(net.state_dict(), str(dir_checkpoint / 'checkpoint_epoch{}.pth'.format(epoch + 1)))
             logging.info(f'Checkpoint {epoch + 1} saved!')
             
-                                    
             if epoch > 0 and epoch != (epochs % 2 - 1) :
                 os.remove( str(dir_checkpoint/'checkpoint_epoch{}.pth'.format(epoch)))
     logging.info("Evalutating on test set")
     logging.info("Loading best model on validation")
-    net.load_state_dict(torch.load(str(dir_checkpoint/'checkpoint_{}_{}_best.pth'.format(cfg.base.dataset_name, cfg.base.original_checkpoint))))
+    net.load_state_dict(torch.load(str(dir_checkpoint/'checkpoint_{}_{}_best_{}.pth'.format(cfg.base.dataset_name, cfg.base.original_checkpoint, str(trial)))))
     test_dice, test_iou = evaluate(net, test_loader, device, 1)
  
     logging.info("Test dice score {}, IoU score {}".format(test_dice, test_iou))
@@ -186,7 +179,7 @@ def train_net(net,
 
     return test_dice, test_iou, test_dice_last, test_iou_last
 
-def eval(cfg, out_dir, net, device, img_scale):
+def eval(cfg, out_dir, net, device, img_scale, trial):
     test_dir_img = Path(cfg.dataloader.test_dir_img)
     test_dir_mask = Path(cfg.dataloader.test_dir_mask)
     test_dataset = SegmentationDataset(name_dataset=cfg.base.dataset_name, images_dir = test_dir_img, masks_dir= test_dir_mask, scale = img_scale)
@@ -194,11 +187,13 @@ def eval(cfg, out_dir, net, device, img_scale):
     test_loader = DataLoader(test_dataset, shuffle=False, drop_last=True, **loader_args)
     dir_checkpoint = Path(out_dir)
     
+    print("Trial", trial+1)
     logging.info("Evalutating on test set")
     logging.info("Loading best model on validation")
-    net.load_state_dict(torch.load(str(dir_checkpoint/'checkpoint_{}_{}_best.pth'.format(cfg.base.dataset_name, cfg.base.original_checkpoint))))
+    net.load_state_dict(torch.load(str(dir_checkpoint/'checkpoint_{}_{}_best_{}.pth'.format(cfg.base.dataset_name, cfg.base.original_checkpoint, str(trial)))))
     test_dice, test_iou = evaluate(net, test_loader, device, 1)
     logging.info("Test dice score {}, IoU score {}".format(test_dice, test_iou))
+    return test_dice, test_iou
 
 #if __name__ == '__main__':
 def train_2d_R50(yml_args, cfg):
@@ -233,7 +228,7 @@ def train_2d_R50(yml_args, cfg):
                 net.to(device=device)
 
                 print("Trial", trial + 1)
-                _2d_dice, _2d_iou, _2d_dice_last, _2d_iou_last = train_net(net=net, cfg=cfg,
+                _2d_dice, _2d_iou, _2d_dice_last, _2d_iou_last = train_net(net=net, cfg=cfg, trial=trial,
                         epochs=cfg.train.num_epochs,
                         train_batch_size=cfg.train.train_batch_size,
                         val_batch_size=cfg.train.valid_batch_size,
@@ -258,17 +253,24 @@ def train_2d_R50(yml_args, cfg):
             print("2d iou {}, mean {}, std {}".format(_2d_ious_last, np.mean(_2d_ious_last), np.std(_2d_ious_last)))
       
         else:
-            print ("----"*3)
-            if cfg.base.original_checkpoint == "scratch":
+            for trial in range(3):
+                print ("----"*3)
+                if cfg.base.original_checkpoint == "scratch":
                     net = smp.Unet(encoder_name="resnet50", encoder_weights=None, in_channels=3, classes=num_classes)
-            else:
-                print ("Using pre-trained models from", cfg.base.original_checkpoint)
-                net = smp.Unet(encoder_name="resnet50", encoder_weights=cfg.base.original_checkpoint, 
-                               in_channels=3, classes=num_classes)
+                else:
+                    print ("Using pre-trained models from", cfg.base.original_checkpoint)
+                    net = smp.Unet(encoder_name="resnet50", encoder_weights=cfg.base.original_checkpoint ,in_channels=3, 
+                                   classes=num_classes)
 
 
-            net.to(device=device)
-            eval(cfg = cfg, out_dir = cfg.base.best_valid_model_checkpoint, net = net, device = device, img_scale = (cfg.base.image_shape, cfg.base.image_shape))
+                net.to(device=device)
+                _2d_dice, _2d_iou = eval(cfg = cfg, out_dir = cfg.base.best_valid_model_checkpoint, net = net, device = device, 
+                                                  img_scale = (cfg.base.image_shape, cfg.base.image_shape), trial=trial)
+                _2d_dices.append(_2d_dice.item())
+                _2d_ious.append(_2d_iou.item())
+            print ("Average performance on best valid set")
+            print("2d dice {}, mean {}, std {}".format(_2d_dices, np.mean(_2d_dices), np.std(_2d_dices)))
+            print("2d iou {}, mean {}, std {}".format(_2d_ious, np.mean(_2d_ious), np.std(_2d_ious)))
 
     except KeyboardInterrupt:
         torch.save(net.state_dict(), 'INTERRUPTED.pth')
