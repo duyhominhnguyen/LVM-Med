@@ -110,9 +110,9 @@ def TrainingTesting(cfg, numtry, pretrained_weight_name, data_path, num_classes,
     train_dir = data_path + "/Training"
     test_dir = data_path + "/Testing"
     if frozen_encoder:
-        checkpoint_dir = cfg.base.best_valid_model_checkpoint + cfg.base.dataset_name + "_" + architecture_type + "_frozen/"
+        checkpoint_dir = cfg.base.best_valid_model_checkpoint + cfg.base.dataset_name + "_" + architecture_type + "_" + name_weights + "_frozen/"
     else:
-        checkpoint_dir = cfg.base.best_valid_model_checkpoint + cfg.base.dataset_name + "_" + architecture_type + "_non_frozen/"
+        checkpoint_dir = cfg.base.best_valid_model_checkpoint + cfg.base.dataset_name + "_" + architecture_type + "_" + name_weights + "_non_frozen/"
 
     CHECK_FOLDER = os.path.isdir(checkpoint_dir)
 
