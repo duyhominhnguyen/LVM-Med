@@ -1,4 +1,5 @@
 from classification_R50.train_R50_classification import train_R50
+from classification_SAMVIT.train_SAMVIT_classification import train_SAMVIT
 
 from utils.func import (
     parse_config,
@@ -11,5 +12,7 @@ if __name__=="__main__":
     assert cfg.base.is_R50 + cfg.base.is_SAMVIT == 1
     if cfg.base.is_R50:
         train_R50(cfg)
+    elif cfg.base.is_SAMVIT:
+        train_SAMVIT(cfg)
     else:
         print("Wrong")
