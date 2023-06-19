@@ -13,7 +13,7 @@ Release LMV-Med pre-trained models. We demonstrate downstream tasks on 2D-3D seg
     <td>Resnet50</td>
     <td> 90% (%) </td>
     <td> 90% (Dice) </td>
-    <td> [GoogleDrive](https://drive.google.com/file/d/1I08oJlXNtDe8jJPxHkroxUi7lYX2lhVc/view?usp=sharing) </td>
+    <td> <a href="https://dl.fbaipublicfiles.com/vicregl/resnet50_alpha0.9.pth">backbone</a> </td>
   </tr>
 </table>
 
