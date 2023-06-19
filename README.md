@@ -10,10 +10,10 @@ Release LMV-Med pre-trained models. We demonstrate downstream tasks on 2D-3D seg
     <th>Weights</th>
   </tr>
   <tr>
-    <th>Resnet50</th>
-    <th> 90% (%) </th>
-    <th> 90% (Dice) </th>
-    <th> [GoogleDrive](https://drive.google.com/file/d/1I08oJlXNtDe8jJPxHkroxUi7lYX2lhVc/view?usp=sharing) </th>
+    <td>Resnet50</td>
+    <td> 90% (%) </td>
+    <td> 90% (Dice) </td>
+    <td> [GoogleDrive](https://drive.google.com/file/d/1I08oJlXNtDe8jJPxHkroxUi7lYX2lhVc/view?usp=sharing) </td>
   </tr>
 </table>
 
