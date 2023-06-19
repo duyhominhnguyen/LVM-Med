@@ -9,6 +9,12 @@ Release LMV-Med pre-trained models. We demonstrate downstream tasks on 2D-3D seg
     <th> 2D Segmentation (Dice) </th>
     <th colspan="6">Weights</th>
   </tr>
+  <tr>
+    <th>Resnet50</th>
+    <th> 90% (%) </th>
+    <th> 90% (Dice) </th>
+    <th colspan="6">[GoogleDrive](https://drive.google.com/file/d/1UUmQqQYY5OInVuXvUgO41Gice93vJ0A7/view?usp=sharing)</th>
+  </tr>
 </table>
 
 ## 2. Project setup
