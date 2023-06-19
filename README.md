@@ -7,7 +7,7 @@ Release LMV-Med pre-trained models. We demonstrate downstream tasks on 2D-3D seg
     <th>Arch</th>
     <th> Classification (%) </th>
     <th> 2D Segmentation (Dice) </th>
-    <th colspan="6">Weights</th>
+    <th>Weights</th>
   </tr>
   <tr>
     <th>Resnet50</th>
