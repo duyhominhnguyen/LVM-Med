@@ -1,0 +1,24 @@
+base:
+  is_R50: 1
+  is_SAMVIT: 0
+  dataset_name: fgadr
+  gpu_id: '3'
+  original_checkpoint: 'LVM-Med-R50' 
+  best_valid_model_checkpoint: './working_dir/checkpoint/'
+  frozen_eval: 0
+  model: 'fcns'
+  test_mode: 'best_valid'
+  valid_rate: 0.2
+  
+train:
+  train_batch_size: 32
+  valid_batch_size: 1
+  test_batch_size: 1
+  learning_rate: 0.0001
+  num_epochs: 30
+  linear_eval: 0
+  solver: 'adam'
+
+dataloader:
+  data_path: './dataset_demo/FGADR'
+  
