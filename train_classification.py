@@ -11,8 +11,8 @@ if __name__=="__main__":
  
     assert cfg.base.is_R50 + cfg.base.is_SAMVIT == 1
     if cfg.base.is_R50:
-        train_R50(cfg)
+        train_R50(yml_args, cfg)
     elif cfg.base.is_SAMVIT:
-        train_SAMVIT(cfg)
+        train_SAMVIT(yml_args, cfg)
     else:
         print("Wrong")
