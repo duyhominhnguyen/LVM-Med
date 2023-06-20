@@ -6,22 +6,22 @@ Release LMV-Med pre-trained models. We demonstrate downstream tasks on 2D-3D seg
   <tr>
     <th>Arch</th>
     <th>Params (M)</th>
-    <th> Classification (%) </th>
     <th> 2D Segmentation (Dice) </th>
+    <th> 3D Segmentation (3D IoU) </th>
     <th>Weights</th>
   </tr>
   <tr>
     <td>ResNet-50</td>
     <td>25.5M</td>
-    <td>90</td>
-    <td>90</td>
+    <td>83.05</td>
+    <td>79.02</td>
     <td> <a href="https://drive.google.com/file/d/11Uamq4bT_AbTf8sigIctIAnQJN4EethW/view?usp=sharing">backbone</a> </td>
   </tr>
   <tr>
     <td>ViT-B</td>
     <td>86.0M</td>
-    <td>90</td>
-    <td>90</td>
+    <td>85.80</td>
+    <td>73.85</td>
     <td> <a href="https://drive.google.com/file/d/14bX8wdw-c3VUw3XPAtFMB-wFE03q0eCi/view?usp=sharing">backbone</a> </td>
   </tr>
 </table>
