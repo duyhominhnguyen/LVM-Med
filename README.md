@@ -15,14 +15,14 @@ Release LMV-Med pre-trained models. We demonstrate downstream tasks on 2D-3D seg
     <td>25.5M</td>
     <td>90</td>
     <td>90</td>
-    <td> <a href="https://drive.google.com/file/d/11Uamq4bT_AbTf8sigIctIAnQJN4EethW/view?usp=drive_link">backbone</a> </td>
+    <td> <a href="https://drive.google.com/file/d/11Uamq4bT_AbTf8sigIctIAnQJN4EethW/view?usp=sharing">backbone</a> </td>
   </tr>
   <tr>
     <td>ViT-B</td>
     <td>86.0M</td>
     <td>90</td>
     <td>90</td>
-    <td> <a href="https://drive.google.com/file/d/14bX8wdw-c3VUw3XPAtFMB-wFE03q0eCi/view?usp=drive_link">backbone</a> </td>
+    <td> <a href="https://drive.google.com/file/d/14bX8wdw-c3VUw3XPAtFMB-wFE03q0eCi/view?usp=sharing">backbone</a> </td>
   </tr>
 </table>
 
