@@ -18,35 +18,7 @@ from model.unet_vit_classification import vit_encoder_b, load_weight_for_vit_enc
 # from model.clip_model import Clip_encoder_classification
 # from model.align_model import Align_encoder_classification
 
-# Define dataset class
-class ImageDataset(Dataset):
-    def __init__(self, root_dir, transform=None):
-        self.root_dir = root_dir
-        self.transform = transform
-        self.classes = ['no_tumor', 'tumor']
-        self.class_to_idx = {'no_tumor': 0, 'tumor': 1}
-        self.images = []
-        self.labels = []
 
-        for i, class_name in enumerate(self.classes):
-            class_dir = os.path.join(self.root_dir, class_name)
-            for img_name in os.listdir(class_dir):
-                img_path = os.path.join(class_dir, img_name)
-                self.images.append(img_path)
-                self.labels.append(self.class_to_idx[class_name])
-
-    def __len__(self):
-        return len(self.images)
-
-    def __getitem__(self, index):
-        img_path = self.images[index]
-        img = Image.open(img_path).convert('RGB')
-        label = self.labels[index]
-
-        if self.transform is not None:
-            img = self.transform(img)
-
-        return img, label
 
 new_settings = {
     "vit": {
