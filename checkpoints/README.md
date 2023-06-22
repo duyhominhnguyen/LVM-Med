@@ -1,1 +1,1 @@
-## Place pre-trained model is this folder please 
+## Please place pre-trained models in this folder 
