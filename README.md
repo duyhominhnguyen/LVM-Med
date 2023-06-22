@@ -56,7 +56,7 @@ Currently support for `Kvasir`, `BUID`, `FGADR`, `MMWHS_MR_Heart` and `MMWHS_CT_
 
 ## 4. How to reproduce our results ?
 
-### End-to-end classification for downstream tasks
+### a. End-to-end classification for downstream tasks
 ```bash
 # Fully fine-tuned with 1 FCN
 python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_non_frozen_1_fcn.yml
@@ -70,13 +70,15 @@ python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_froz
 # Freeze all and fine-tune multi-layer FCN only
 python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_frozen_fcns.yml
 ```
+### b. End-to-end object detection for downstream tasks
+You can refer to [`Object Detection`](/Object_Detection) folder for more details.
 
-### Zero-shot prompt-based segmentation with Segment Anything Model (SAM) for downstream tasks
+### c. Zero-shot prompt-based segmentation with Segment Anything Model (SAM) for downstream tasks
 ```bash
 python3 zero_shot_segmentation.py -c dataloader/yaml_data/buid_sam.yml
 ```
 
-### Prompt-based segmentation with Fine-tune SAM (MedSAM) for downstream tasks
+### d. Prompt-based segmentation with Fine-tune SAM (MedSAM) for downstream tasks
 You could also see the examples of [`Prompt_Demo.ipynb`](/notebook/Prompt_Demo.ipynb) for results visualization using prompt-based MedSAM.
 #### Train
 ```bash
@@ -87,7 +89,7 @@ python3 medsam.py -c dataloader/yaml_data/buid_sam.yml
 python3 medsam.py -c dataloader/yaml_data/buid_sam.yml -test
 ```
 
-### Prompt-based segmentation with LVM-Med (encoder) + MedSAM for downstream tasks
+### e. Prompt-based segmentation with LVM-Med (encoder) + MedSAM for downstream tasks
 The difference in yaml file between LVM-Med + MedSAM and the original MedSAM is just the way you save the trained model. Hence you could either use the MedSAM's yaml file or create a new one, it would make no difference in the final performance.     
 
 For results visualization with LVM-Med as encoder, you could check our examples at [`LVMMed_Encoder_Prompt_Demo.ipynb`](/notebook/LVMMed_Encoder_Prompt_Demo.ipynb)
@@ -96,7 +98,7 @@ For results visualization with LVM-Med as encoder, you could check our examples 
 python3 medsam.py -c dataloader/yaml_data/buid_lvm_med_sam.yml -lvm_encoder workdir/pretrained/vit_b_largescale_dim256.pth
 ```
 
-### LVM-Med 
+### f. LVM-Med 
 #### Fine-tune for downstream tasks using ResNet-50
 For running downstream tasks, we utilize Unet from `segmentation-models-pytorch` package. To install this library we do the following tasks: 
 1. `git clone https://github.com/qubvel/segmentation_models.pytorch.git` and `cd segmentation_models_pytorch`
