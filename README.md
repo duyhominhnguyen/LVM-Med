@@ -28,9 +28,9 @@ Release LMV-Med pre-trained models. We demonstrate downstream tasks on 2D-3D seg
 
 After installing the pre-trained models, please place them in [`checkpoints`](/checkpoints/) folder to use them. 
 
-- For Resnet-50, we run end-to-end segmentation
-- For ViT-B, we run prompt-based segmentation
-- The code for ViT-B end-to-end segmentation will be upload soon
+- For **Resnet-50**, we run **end-to-end** segmentation
+- For **ViT-B**, we run **prompt-based** segmentation
+- The code and pre-trained model for **ViT-B** **end-to-end** segmentation will be uploaded soon!!!
 
 ## 2. Project setup
 
