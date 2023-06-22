@@ -26,11 +26,7 @@ Release LMV-Med pre-trained models. We demonstrate downstream tasks on 2D-3D seg
   </tr>
 </table>
 
-
-
-
-
-
+After installing the pre-trained models, please place them in [`checkpoints`](/checkpoints/) folder to use them. 
 
 
 ## 2. Project setup
