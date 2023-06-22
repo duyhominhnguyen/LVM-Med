@@ -85,10 +85,10 @@ python3 medsam.py -c dataloader/yaml_data/buid_lvm_med_sam.yml -lvm_encoder work
 #### Fine-tune for downstream tasks using ResNet-50
 For running downstream tasks, we utilize Unet from `segmentation-models-pytorch` package. To install this library we do the following tasks: 
 1. `git clone https://github.com/qubvel/segmentation_models.pytorch.git` and `cd segmentation_models_pytorch`
-2.  Access this path in the smp package: `/encoders/resnet.py` and add your download pre-trained weight (you can see our example in [`segmentation_models_pytorch/encoders
+2. Access this path in the smp package: `/encoders/resnet.py` and add your download pre-trained weight (you can see our example in [`segmentation_models_pytorch/encoders
 /resnet.py`](segmentation_models_pytorch/encoders/resnet.py)
-3.  Then `pip install segmentation-models-pytorch` to install dependencies
-
+3. Then `pip install segmentation-models-pytorch` to install dependencies
+4. After that you can run the below command: 
 ```bash
 python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_R50.yml
 ```
