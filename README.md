@@ -56,6 +56,21 @@ Currently support for `Kvasir`, `BUID`, `FGADR`, `MMWHS_MR_Heart` and `MMWHS_CT_
 
 ## 4. How to reproduce our results ?
 
+### End-to-end classification for downstream tasks
+```bash
+# Fully fine-tuned with 1 FCN
+python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_non_frozen_1_fcn.yml
+
+# Fully fine-tuned with multiple FCNs
+python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_non_frozen_fcns.yml
+
+# Freeze all and fine-tune 1-layer FCN only 
+python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_frozen_1_fcn.yml
+
+# Freeze all and fine-tune multi-layer FCN only
+python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_frozen_fcns.yml
+```
+
 ### Zero-shot prompt-based segmentation with Segment Anything Model (SAM) for downstream tasks
 ```bash
 python3 zero_shot_segmentation.py -c dataloader/yaml_data/buid_sam.yml
