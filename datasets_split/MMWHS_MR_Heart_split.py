@@ -7,7 +7,7 @@ import nibabel
 from scipy import ndimage
 import glob
 from skimage.io import imsave
-from utils.dataset_prepare import split_data, save_fileLabel
+from utils.dataset_prepare import split_data, save_fileLabel_3D
 
 # input image is the volume
 def __itensity_normalize_one_volume__(image):
@@ -25,8 +25,8 @@ def __itensity_normalize_one_volume__(image):
 
 def __training_data_process__(data, label): 
     # crop data according net input size
-    data = data.get_data()
-    label = label.get_data()
+    data = data.get_fdata()
+    label = label.get_fdata()
 
     # normalization datas
     data = __itensity_normalize_one_volume__(data)
@@ -62,10 +62,10 @@ def preprocess_vol(img_name, label_name):
 def MMWHS_MR_Heart_split():
     dataset_name = "MMWHS_MR_Heart"
     ### Training set
-    data_dir = '../dataset_demo/MMWHS_MR_Heart/Raw/train/'
+    data_dir = './dataset_demo/MMWHS_MR_Heart/Raw/train/'
     img_fold_list = os.listdir(data_dir)
-    dest_dir = '../dataset_demo/MMWHS_MR_Heart/train/' # dir for saving train images
-    dest_dir_label = '../dataset_demo/MMWHS_MR_Heart/train_labels/'
+    dest_dir = './dataset_demo/MMWHS_MR_Heart/train/' # dir for saving train images
+    dest_dir_label = './dataset_demo/MMWHS_MR_Heart/train_labels/'
     if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
     if not os.path.exists(dest_dir_label):
@@ -83,10 +83,10 @@ def MMWHS_MR_Heart_split():
             imsave(os.path.join(dest_dir_label, vol_name.replace('image','label').split('.')[0] + '_frame_' + str(depth).zfill(3) + '.png'), mask[:, :, depth], check_contrast=False)
 
     ### Validation set
-    data_dir = '../dataset_demo/MMWHS_MR_Heart/Raw/valid/'
+    data_dir = './dataset_demo/MMWHS_MR_Heart/Raw/valid/'
     img_fold_list = os.listdir(data_dir)
-    dest_dir = '../dataset_demo/MMWHS_MR_Heart/valid/'
-    dest_dir_label = '../dataset_demo/MMWHS_MR_Heart/valid_labels/'
+    dest_dir = './dataset_demo/MMWHS_MR_Heart/valid/'
+    dest_dir_label = './dataset_demo/MMWHS_MR_Heart/valid_labels/'
     if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
     if not os.path.exists(dest_dir_label):
@@ -104,10 +104,10 @@ def MMWHS_MR_Heart_split():
             imsave(os.path.join(dest_dir_label, vol_name.replace('image','label').split('.')[0] + '_frame_' + str(depth).zfill(3) + '.png'), mask[:, :, depth], check_contrast=False)
 
     ### Testing set
-    data_dir = '../dataset_demo/MMWHS_MR_Heart/Raw/test/'
+    data_dir = './dataset_demo/MMWHS_MR_Heart/Raw/test/'
     img_fold_list = os.listdir(data_dir)
-    dest_dir = '../dataset_demo/MMWHS_MR_Heart/test/'
-    dest_dir_label = '../dataset_demo/MMWHS_MR_Heart/test_labels/'
+    dest_dir = './dataset_demo/MMWHS_MR_Heart/test/'
+    dest_dir_label = './dataset_demo/MMWHS_MR_Heart/test_labels/'
     if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
     if not os.path.exists(dest_dir_label):
@@ -125,4 +125,4 @@ def MMWHS_MR_Heart_split():
             imsave(os.path.join(dest_dir_label, vol_name.replace('image','label').split('.')[0] + '_frame_' + str(depth).zfill(3) + '.png'), mask[:, :, depth], check_contrast=False)
     
     
-    save_fileLabel(dataset_name)
+    save_fileLabel_3D(dataset_name)
