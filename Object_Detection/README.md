@@ -11,7 +11,7 @@ python convert_to_coco.py # Note, please check again if this file is correct. Do
 ```
 
 ## 3. Set train, valid, test folders
-Edit [`base_config_track.py`](/base_config_track.py) at:
+Edit [`base_config_track.py`](/Object_Detection/base_config_track.py) at:
 + Lines `11`, `12` for training set
 + Lines `60`, `61` for valid set
 + Lines `65`, `66` for test set
