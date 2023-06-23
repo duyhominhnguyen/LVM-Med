@@ -22,11 +22,11 @@ train:
   scheduler: 1
 
 dataloader:
-  train_dir_img: '/home/caduser/Universal_Experiment/MMWHS_MR_Heart/train/' #'./dataset_demo/MMWHS_MR_Heart/train'
-  train_dir_mask: '/home/caduser/Universal_Experiment/MMWHS_MR_Heart/train_labels' #'./dataset_demo/MMWHS_MR_Heart/train_labels'
-  valid_dir_img: '/home/caduser/Universal_Experiment/MMWHS_MR_Heart/valid/' #'./dataset_demo/MMWHS_MR_Heart/valid'
-  valid_dir_mask: '/home/caduser/Universal_Experiment/MMWHS_MR_Heart/valid_labels' #'./dataset_demo/MMWHS_MR_Heart/valid_labels'
-  test_dir_img: '/home/caduser/Universal_Experiment/MMWHS_MR_Heart/test/' #'./dataset_demo/MMWHS_MR_Heart/test'
-  test_dir_mask: '/home/caduser/Universal_Experiment/MMWHS_MR_Heart/test_labels' #'./dataset_demo/MMWHS_MR_Heart/test_labels'
-  have_label: '/home/caduser/KOTORI/downstream_task/have_labelMR_new.txt' #'./dataset_demo/MMWHS_MR_Heart/have_label.txt'
-  non_label: '/home/caduser/KOTORI/downstream_task/non_labelMR_new.txt' #'./dataset_demo/MMWHS_MR_Heart/non_label.txt'
+  train_dir_img: './dataset_demo/MMWHS_MR_Heart/train'
+  train_dir_mask: './dataset_demo/MMWHS_MR_Heart/train_labels'
+  valid_dir_img: './dataset_demo/MMWHS_MR_Heart/valid'
+  valid_dir_mask: './dataset_demo/MMWHS_MR_Heart/valid_labels'
+  test_dir_img: './dataset_demo/MMWHS_MR_Heart/test'
+  test_dir_mask: './dataset_demo/MMWHS_MR_Heart/test_labels'
+  have_label: './dataset_demo/MMWHS_MR_Heart/have_label.txt'
+  non_label: './dataset_demo/MMWHS_MR_Heart/non_label.txt'
