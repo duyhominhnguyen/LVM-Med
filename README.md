@@ -45,6 +45,15 @@ conda env create -f lvm_med.yml
 conda activate lvm_med
 ```
 
+For running **Fine-tune for downstream tasks using ResNet-50** in **Section 4f**, we utilize Unet from `segmentation-models-pytorch` package. To install this library we do the following tasks: 
+
+1. `git clone https://github.com/qubvel/segmentation_models.pytorch.git` and `cd segmentation_models_pytorch`
+2. Access this path in the smp package: `/encoders/resnet.py` and add your download pre-trained weight (you can see our example in [`segmentation_models_pytorch/encoders
+/resnet.py`](segmentation_models_pytorch/encoders/resnet.py) )
+3. Then `pip install segmentation-models-pytorch` to install its dependencies
+
+
+
 ## 3. Prepare dataset
 First you should download the respective dataset that you need to run to the [`dataset_demo`](/dataset_demo/) folder. To get as close results as your work as possible, you could prepare some of our specific dataset (which are not pre-distributed) the same way as we do:
 ```bash
@@ -100,12 +109,7 @@ python3 medsam.py -c dataloader/yaml_data/buid_lvm_med_sam.yml -lvm_encoder work
 
 ### f. LVM-Med 
 #### Fine-tune for downstream tasks using ResNet-50
-For running downstream tasks, we utilize Unet from `segmentation-models-pytorch` package. To install this library we do the following tasks: 
-1. `git clone https://github.com/qubvel/segmentation_models.pytorch.git` and `cd segmentation_models_pytorch`
-2. Access this path in the smp package: `/encoders/resnet.py` and add your download pre-trained weight (you can see our example in [`segmentation_models_pytorch/encoders
-/resnet.py`](segmentation_models_pytorch/encoders/resnet.py)
-3. Then `pip install segmentation-models-pytorch` to install dependencies
-4. After that you can run the below command: 
+
 ```bash
 python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_R50.yml
 ```
