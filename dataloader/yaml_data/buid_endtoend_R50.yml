@@ -22,11 +22,11 @@ train:
   scheduler: 0
 
 dataloader:
-  train_dir_img: '/home/caduser/Foundmed_Experiment/Segmentation/BUID_new_process/train' #'./dataset_demo/BUID/train'
-  train_dir_mask: '/home/caduser/Foundmed_Experiment/Segmentation/BUID_new_process/train_labels' #'./dataset_demo/BUID/train_labels'
-  valid_dir_img: '/home/caduser/Foundmed_Experiment/Segmentation/BUID_new_process/valid' #'./dataset_demo/BUID/valid'
-  valid_dir_mask: '/home/caduser/Foundmed_Experiment/Segmentation/BUID_new_process/valid_labels' #'./dataset_demo/BUID/valid_labels'
-  test_dir_img: '/home/caduser/Foundmed_Experiment/Segmentation/BUID_new_process/test' #'./dataset_demo/BUID/test'
-  test_dir_mask: '/home/caduser/Foundmed_Experiment/Segmentation/BUID_new_process/test_labels' #'./dataset_demo/BUID/test_labels'
-  have_label: '/home/caduser/Foundmed_Experiment/Segmentation/BUID_new_process/have_label.txt' #'./dataset_demo/BUID/have_label.txt'
-  non_label: '/home/caduser/Foundmed_Experiment/Segmentation/BUID_new_process/non_label.txt' #'./dataset_demo/BUID/non_label.txt'
+  train_dir_img: './dataset_demo/BUID/train'
+  train_dir_mask: './dataset_demo/BUID/train_labels'
+  valid_dir_img: './dataset_demo/BUID/valid'
+  valid_dir_mask: './dataset_demo/BUID/valid_labels'
+  test_dir_img: './dataset_demo/BUID/test'
+  test_dir_mask: './dataset_demo/BUID/test_labels'
+  have_label: './dataset_demo/BUID/have_label.txt'
+  non_label: './dataset_demo/BUID/non_label.txt'
