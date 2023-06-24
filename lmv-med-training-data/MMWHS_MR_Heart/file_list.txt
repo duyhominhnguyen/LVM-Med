@@ -1,0 +1,10 @@
+mr_train_1014_image.nii
+mr_train_1020_image.nii
+mr_train_1008_image.nii
+mr_train_1008_label.nii
+mr_train_1014_label.nii
+mr_train_1009_label.nii
+mr_train_1005_label.nii
+mr_train_1020_label.nii
+mr_train_1005_image.nii
+mr_train_1009_image.nii
