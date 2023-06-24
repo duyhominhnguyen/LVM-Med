@@ -66,6 +66,7 @@ Currently support for `Kvasir`, `BUID`, `FGADR`, `MMWHS_MR_Heart` and `MMWHS_CT_
 ## 4. How to reproduce our results ?
 
 ### a. End-to-end classification for downstream tasks
+#### Train
 ```bash
 # Fully fine-tuned with 1 FCN
 python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_non_frozen_1_fcn.yml
@@ -78,6 +79,20 @@ python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_froz
 
 # Freeze all and fine-tune multi-layer FCN only
 python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_frozen_fcns.yml
+```
+#### Inference
+```bash
+# Fully fine-tuned with 1 FCN
+python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_non_frozen_1_fcn.yml -test
+
+# Fully fine-tuned with multiple FCNs
+python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_non_frozen_fcns.yml -test
+
+# Freeze all and fine-tune 1-layer FCN only 
+python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_frozen_1_fcn.yml -test
+
+# Freeze all and fine-tune multi-layer FCN only
+python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_frozen_fcns.yml -test
 ```
 ### b. End-to-end object detection for downstream tasks
 You can refer to [`Object Detection`](/Object_Detection) folder for more details.
@@ -108,6 +123,7 @@ python3 medsam.py -c dataloader/yaml_data/buid_lvm_med_sam.yml -lvm_encoder work
 ```
 
 ### f. LVM-Med 
+#### Train
 #### Fine-tune for downstream tasks using ResNet-50
 
 ```bash
@@ -116,4 +132,14 @@ python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_R50.yml
 #### Fine-tune for downstream tasks using SAM's VIT
 ```bash
 python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_SAM_VIT.yml
+```
+#### Inference
+#### Downstream tasks using ResNet-50
+
+```bash
+python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_R50.yml -test
+```
+#### Downstream tasks using SAM's VIT
+```bash
+python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_SAM_VIT.yml -test
 ```
