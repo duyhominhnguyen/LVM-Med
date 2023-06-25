@@ -6,7 +6,7 @@ base:
   gpu_id: 3
   num_workers: 40
   pin_memory: True 
-  original_checkpoint: '/home/tannp/ICML_workshop/work_dir/SAM/sam_vit_b_01ec64.pth' # Original checkpoint from segment-anything project
+  original_checkpoint: './working_dir/sam_vit_b_01ec64.pth' # Original checkpoint from segment-anything project
   best_valid_model_checkpoint: 'sam_model_best_dice_original_buidnewprocess_seed'
   image_shape: (3, 1024)
 
@@ -20,9 +20,9 @@ train:
   num_epochs: 20
 
 dataloader:
-  train_dir_img: '/home/tannp/MedSAM_original/dataloader/Segmentation_dataset/BUID_new_process/train'
-  train_dir_mask: '/home/tannp/MedSAM_original/dataloader/Segmentation_dataset/BUID_new_process/train_labels'
-  valid_dir_img: '/home/tannp/MedSAM_original/dataloader/Segmentation_dataset/BUID_new_process/valid'
-  valid_dir_mask: '/home/tannp/MedSAM_original/dataloader/Segmentation_dataset/BUID_new_process/valid_labels'
-  test_dir_img: '/home/tannp/MedSAM_original/dataloader/Segmentation_dataset/BUID_new_process/test'
-  test_dir_mask: '/home/tannp/MedSAM_original/dataloader/Segmentation_dataset/BUID_new_process/test_labels'
+  train_dir_img: './working_dir/BUID/train'
+  train_dir_mask: './working_dir/BUID/train_labels'
+  valid_dir_img: './working_dir/BUID/valid'
+  valid_dir_mask: './working_dir/BUID/valid_labels'
+  test_dir_img: './working_dir/BUID/test'
+  test_dir_mask: './working_dir/BUID/test_labels'

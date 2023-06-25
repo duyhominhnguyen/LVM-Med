@@ -32,6 +32,9 @@ After installing the pre-trained models, please place them in [`checkpoints`](/c
 - For **ViT-B**, we run **prompt-based** segmentation
 - The code and pre-trained model for **ViT-B** **end-to-end** segmentation will be uploaded soon!!!
 
+### For Segment Anything Model
+- In this work, we use base version of SAM which is `sam_vit_b`. You could browse the [`original repo`](https://github.com/facebookresearch/segment-anything) for pretrained weight. After that, you shall put it in ['./working_dir/sam_vit_b_01ec64.pth'](./working_dir/) folder to use yaml properly.
+
 ## 2. Project setup
 
 The code requires `python>=3.8`, as well as `pytorch>=1.7` and `torchvision>=0.8`. Please follow the instructions [here](https://pytorch.org/get-started/locally/) to install both PyTorch and TorchVision dependencies. Installing both PyTorch and TorchVision with CUDA support is strongly recommended.
@@ -55,6 +58,10 @@ For running **Fine-tune for downstream tasks using ResNet-50** in **Section 4f**
 
 
 ## 3. Prepare dataset
+### For Brain dataset
+You could download the `Brain` dataset via Kaggle's [`Brain Tumor Classification (MRI)`](https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri)
+
+### Other
 First you should download the respective dataset that you need to run to the [`dataset_demo`](/dataset_demo/) folder. To get as close results as your work as possible, you could prepare some of our specific dataset (which are not pre-distributed) the same way as we do:
 ```bash
 python prepare_dataset.py -ds [dataset_name]
