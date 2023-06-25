@@ -1,9 +1,32 @@
 ## LVM-Med: Learning Large-Scale Self-Supervised Vision Models for Medical Imaging via Second-order Graph Matching
-We release LMV-Med's pre-trained models. We demonstrate downstream tasks on 2D-3D segmentations, linear/fully finetuning image classification, and object detection.  
-![](lvm-med-data.pdf)
+We release LMV-Med's pre-trained models and demonstrate downstream tasks on 2D-3D segmentations, linear/fully finetuning image classification, and object detection. 
 
+LVM-Med was trained with ~ 1.2 million medical images collected from 55 datasets using a second-order graph matching formulation unifying
+current contrastive and instance-based SSL.
 
-## 1. Pretrained models
+![](body_lvm_med.jpg)
+
+![](lvm_med_compare.jpg)
+
+## Table of contents
+* [News](#news)
+* [LVM-Med Pretrained Models](#Pretrained-models)
+* [Prerequisites](#prerequisites)
+* [Preparing Dataset](#preparing_datasets)
+* [Downstream Tasks](#downstream)
+    * [i) Segmentation](#segmentation)
+    * [ii) Image Classification](#image_classification)
+    * [iii) Object Detection](#object_detection)
+* [Citation](#citation)
+* [Related Work](#related-work)
+* [License](#license)
+
+## News
+- Cominng soon: [ConvNext](https://arxiv.org/abs/2201.03545) architecture trained by LVM-Med.
+- Coming soon: ViT architectures for end-to-end segmentation with better performance reported in the paper.
+- **25/06/2023**: We release two pre-trained models of LVM-Med: ResNet-50 and ViT-B. Providing scripts for downstream tasks.
+
+## LVM-Med Pretrained Models
 <table>
   <tr>
     <th>Arch</th>
@@ -28,16 +51,17 @@ We release LMV-Med's pre-trained models. We demonstrate downstream tasks on 2D-3
   </tr>
 </table>
 
-After installing the pre-trained models, please place them in [`checkpoints`](/checkpoints/) folder to use them. 
+After downloading the pre-trained models, please place them in [`checkpoints`](/checkpoints/) folder to use. 
 
-- For **Resnet-50**, we run **end-to-end** segmentation
-- For **ViT-B**, we run **prompt-based** segmentation
-- The code and pre-trained model for **ViT-B** **end-to-end** segmentation will be uploaded soon!!!
+- For **Resnet-50**, we demo **end-to-end** segmentation/classification/object detection.
+- For **ViT-B**, we demo **prompt-based** segmentation.
 
-### For Segment Anything Model
+**For Segment Anything Model**
 - In this work, we use base version of SAM which is `sam_vit_b`. You could browse the [`original repo`](https://github.com/facebookresearch/segment-anything) for pretrained weight. After that, you shall put it in [`./working_dir/sam_vit_b_01ec64.pth`](./working_dir/) folder to use yaml properly.
 
-## 2. Project setup
+**Important Note:** please check[```dataset.md```](/lmv-med-training-data/dataset.md) to avoid potential leaking testing data when using our model.
+
+## Prerequisites
 
 The code requires `python>=3.8`, as well as `pytorch>=1.7` and `torchvision>=0.8`. Please follow the instructions [here](https://pytorch.org/get-started/locally/) to install both PyTorch and TorchVision dependencies. Installing both PyTorch and TorchVision with CUDA support is strongly recommended.
 
@@ -50,18 +74,18 @@ conda env create -f lvm_med.yml
 conda activate lvm_med
 ```
 
-For running **Fine-tune for downstream tasks using ResNet-50** in **Section 4f**, we utilize Unet from `segmentation-models-pytorch` package. To install this library we do the following tasks: 
+To **fine-tune for downstream tasks using ResNet-50** in **Section 4f**, we utilize U-Net from `segmentation-models-pytorch` package. To install this library, you can do the following ones: 
 
 1. `git clone https://github.com/qubvel/segmentation_models.pytorch.git` and `cd segmentation_models_pytorch`
 2. Access this path in the smp package: `/encoders/resnet.py` and add your download pre-trained weight (you can see our example in [`segmentation_models_pytorch/encoders
 /resnet.py`](segmentation_models_pytorch/encoders/resnet.py) )
 3. Then `pip install segmentation-models-pytorch` to install its dependencies
 
-## 3. Prepare dataset
-### For Brain dataset
+## Preparing dataset
+### For the Brain Tumor Dataset
 You could download the `Brain` dataset via Kaggle's [`Brain Tumor Classification (MRI)`](https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri) and change the name into  "BRAIN".
 
-### Other
+### Others
 First you should download the respective dataset that you need to run to the [`dataset_demo`](/dataset_demo/) folder. To get as close results as your work as possible, you could prepare some of our specific dataset (which are not pre-distributed) the same way as we do:
 ```bash
 python prepare_dataset.py -ds [dataset_name]
@@ -72,10 +96,81 @@ Currently support for `Kvasir`, `BUID`, `FGADR`, `MMWHS_MR_Heart` and `MMWHS_CT_
 
 **Note:** You should change your dataset name into the correct format (i.e., Kvasir, BUID) as our current support dataset name. Or else it won't work as expected.
 
-## 4. How to reproduce our results ?
+## Downstream Tasks
+### i) Segmentation
+##### 1. End-to-End Segmentation
+**a) Training Phase:**
 
-### a. End-to-end classification for downstream tasks
+**Fine-tune for downstream tasks using ResNet-50**
+
+```bash
+python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_R50.yml
+```
+Chaning name of dataset in ``.yml`` configs in [```./dataloader/yaml_data/```](./dataloader/yaml_data/) for other experiments.
+
+
+[//]: # (#### Fine-tune for downstream tasks using SAM's VIT)
+
+[//]: # (```bash)
+
+[//]: # (python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_SAM_VIT.yml)
+
+[//]: # (```)
+**b) Inference:**
+#### ResNet-50 version
+
+```bash
+python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_R50.yml -test
+```
+For end-to-end version using SAM's ViT, we will soon release a better version than reported results in the paper.
+
+[//]: # (#### SAM's ViT version)
+
+[//]: # (```bash)
+
+[//]: # (python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_SAM_VIT.yml -test)
+
+[//]: # (```)
+
+#### 2. Prompt-based Segmentation with ViT-B
+**a. Prompt-based segmentation with fined-tune decoder of SAM ([MedSAM](https://github.com/bowang-lab/MedSAM)).**
+
+We run the MedSAM baseline to compare performance by:
 #### Train
+```bash
+python3 medsam.py -c dataloader/yaml_data/buid_sam.yml 
+```
+#### Inference
+```bash
+python3 medsam.py -c dataloader/yaml_data/buid_sam.yml -test
+```
+
+[//]: # (You could also see the examples of [`Prompt_Demo.ipynb`]&#40;/notebook/Prompt_Demo.ipynb&#41; for results visualization using prompt-based MedSAM with pretrained weight for each model in demo is [here]&#40;https://drive.google.com/drive/u/0/folders/1tjrkyEozE-98HAGEtyHboCT2YHBSW15U&#41; and put it in [`working_dir/checkpoints`]&#40;./working_dir/checkpoints/&#41;.)
+
+**b. Prompt-based segmentation as [MedSAM](https://github.com/bowang-lab/MedSAM) but using LVM-Med's Encoder.**
+
+The training script is similar as MedSAM case but specify the weight model by ```-lvm_encoder```.
+#### Train
+```bash
+python3 medsam.py -c dataloader/yaml_data/buid_lvm_med_sam.yml -lvm_encoder workdir/pretrained/vit_b_largescale_dim256.pth
+```
+
+#### Test
+```bash
+python3 medsam.py -c dataloader/yaml_data/buid_lvm_med_sam.yml -test
+```
+You can check our notebook[`Prompt_Demo.ipynb`](/notebook/Prompt_Demo.ipynb)for visualization.
+
+**c. Zero-shot prompt-based segmentation with Segment Anything Model (SAM) for downstream tasks**
+
+The SAM model without any finetuning using bounding box-based prompts can be done by: 
+```bash
+python3 zero_shot_segmentation.py -c dataloader/yaml_data/buid_sam.yml
+```
+### ii) Image Classification
+We provide training and testing scripts using LVM-Med's models for Brain Tumor Classification and Diabetic Retinopathy Grading in FGADR dataset (Table 5 in main paper and Table 12 in Appendix).
+
+**a. Training with FGADR**
 ```bash
 # Fully fine-tuned with 1 FCN
 python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_non_frozen_1_fcn.yml
@@ -89,7 +184,9 @@ python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_froz
 # Freeze all and fine-tune multi-layer FCN only
 python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_frozen_fcns.yml
 ```
-#### Inference
+To run for ```Brain dataset```, choose other config files ```brain_xyz.yml```in folder [`./dataloader/yaml_data/`](/dataloader/yaml_data).
+
+**b. Inference with FGADR**
 ```bash
 # Fully fine-tuned with 1 FCN
 python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_non_frozen_1_fcn.yml -test
@@ -103,52 +200,64 @@ python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_froz
 # Freeze all and fine-tune multi-layer FCN only
 python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_frozen_fcns.yml -test
 ```
-### b. End-to-end object detection for downstream tasks
-You can refer to [`Object Detection`](/Object_Detection) folder for more details.
+### iii) Object Detection
+We demonstrate using LVM-Med ResNet-50 for object detection with Vin-Dr dataset. We use Faster-RCNN for the network backbone.
+You can access[`Object Detection`](./Object_Detection) folder for more details.
 
-### c. Zero-shot prompt-based segmentation with Segment Anything Model (SAM) for downstream tasks
-```bash
-python3 zero_shot_segmentation.py -c dataloader/yaml_data/buid_sam.yml
+## Citation
+Please cite this paper if it helps your research:
+```bibtex
+@article{nguyen2023lvm,
+  title={LVM-Med: Learning Large-Scale Self-Supervised Vision Models for Medical Imaging via Second-order Graph Matching},
+  author={Nguyen, Duy MH and Nguyen, Hoang and Diep, Nghiem T and Pham, Tan N and Cao, Tri and Nguyen, Binh T and Swoboda, Paul and Ho, Nhat and Albarqouni, Shadi and Xie, Pengtao and others},
+  journal={arXiv preprint arXiv:2306.11925},
+  year={2023}
+}
 ```
 
-### d. Prompt-based segmentation with Fine-tune SAM (MedSAM) for downstream tasks
-You could also see the examples of [`Prompt_Demo.ipynb`](/notebook/Prompt_Demo.ipynb) for results visualization using prompt-based MedSAM with pretrained weight for each model in demo is [here](https://drive.google.com/drive/u/0/folders/1tjrkyEozE-98HAGEtyHboCT2YHBSW15U) and put it in [`working_dir/checkpoints`](./working_dir/checkpoints/).
-#### Train
-```bash
-python3 medsam.py -c dataloader/yaml_data/buid_sam.yml 
-```
-#### Inference
-```bash
-python3 medsam.py -c dataloader/yaml_data/buid_sam.yml -test
-```
+## Related Work
+We use and modify codes from [SAM](https://github.com/facebookresearch/segment-anything) and [MedSAM](https://github.com/bowang-lab/MedSAM) for prompt-based segmentation settings. A part of LVM-Med algorithm adopt data transformations from [Vicregl](https://github.com/facebookresearch/VICRegL), [Deepcluster-v2](https://github.com/facebookresearch/swav?utm_source=catalyzex.com). We also utilize [vissl](https://github.com/facebookresearch/vissl) framework to train 2D self-superived methods in our collected data. Thank the authors for their great work!
 
-### e. Prompt-based segmentation with LVM-Med (encoder) + MedSAM for downstream tasks
-The difference in yaml file between LVM-Med + MedSAM and the original MedSAM is just the way you save the trained model. Hence you could either use the MedSAM's yaml file or create a new one, it would make no difference in the final performance.     
+## License
+Licensed under the [CC BY-NC-ND 2.0](https://creativecommons.org/licenses/by-nc-nd/2.0/) (**Attribution-NonCommercial-NoDerivs 2.0 Generic**). The code is released for academic research use only. For commercial use, please contact [hong01@dfki.com](hong01@dfki.com).
 
-For results visualization with LVM-Med as encoder, you could check our examples at [`LVMMed_Encoder_Prompt_Demo.ipynb`](/notebook/LVMMed_Encoder_Prompt_Demo.ipynb)
 
-```bash
-python3 medsam.py -c dataloader/yaml_data/buid_lvm_med_sam.yml -lvm_encoder workdir/pretrained/vit_b_largescale_dim256.pth
-```
+[//]: # (### f. LVM-Med )
 
-### f. LVM-Med 
-#### Train
-#### Fine-tune for downstream tasks using ResNet-50
+[//]: # (#### Training Phase)
 
-```bash
-python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_R50.yml
-```
-#### Fine-tune for downstream tasks using SAM's VIT
-```bash
-python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_SAM_VIT.yml
-```
-#### Inference
-#### Downstream tasks using ResNet-50
+[//]: # (#### Fine-tune for downstream tasks using ResNet-50)
 
-```bash
-python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_R50.yml -test
-```
-#### Downstream tasks using SAM's VIT
-```bash
-python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_SAM_VIT.yml -test
-```
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_R50.yml)
+
+[//]: # (```)
+
+[//]: # (#### Fine-tune for downstream tasks using SAM's VIT)
+
+[//]: # (```bash)
+
+[//]: # (python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_SAM_VIT.yml)
+
+[//]: # (```)
+
+[//]: # (#### Inference)
+
+[//]: # (#### Downstream tasks using ResNet-50)
+
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_R50.yml -test)
+
+[//]: # (```)
+
+[//]: # (#### Downstream tasks using SAM's VIT)
+
+[//]: # (```bash)
+
+[//]: # (python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_SAM_VIT.yml -test)
+
+[//]: # (```)
