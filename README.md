@@ -93,7 +93,7 @@ You could download the `Brain` dataset via Kaggle's [`Brain Tumor Classification
 You can download dataset from this link drive: [`VinDr`](https://drive.google.com/drive/folders/1DYnxgGA83DaZRds1C2xlkMCjTqeE8s-s?usp=sharing) and put the dataset into the folder object_detection. 
 If you want to build the dataset by yourself, you can refer the script ```convert_to_coco.py``` inside folder object_detection and run it.
 ```bash
-python convert_to_coco.py # Note, please check all links inside the code
+python convert_to_coco.py # Note, please check links inside the code in lines 146 and 158 to build dataset correctly
 ```
 
 ### Others
