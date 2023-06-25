@@ -85,6 +85,10 @@ To **fine-tune for downstream tasks using ResNet-50** in **Section 4f**, we util
 ### For the Brain Tumor Dataset
 You could download the `Brain` dataset via Kaggle's [`Brain Tumor Classification (MRI)`](https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri) and change the name into  "BRAIN".
 
+### For VinDr
+You can download dataset from this link drive: ['VinDr'](https://drive.google.com/drive/folders/1DYnxgGA83DaZRds1C2xlkMCjTqeE8s-s?usp=sharing) and put the dataset into the folder object_detection. 
+If you want to build the dataset by yourself, you can refer the script convert_to_coco.py inside folder object_detection and run it.
+
 ### Others
 First you should download the respective dataset that you need to run to the [`dataset_demo`](/dataset_demo/) folder. To get as close results as your work as possible, you could prepare some of our specific dataset (which are not pre-distributed) the same way as we do:
 ```bash
