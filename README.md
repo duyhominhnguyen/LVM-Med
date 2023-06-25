@@ -4,9 +4,13 @@ We release LMV-Med's pre-trained models and demonstrate downstream tasks on 2D-3
 LVM-Med was trained with ~ 1.2 million medical images collected from 55 datasets using a second-order graph matching formulation unifying
 current contrastive and instance-based SSL.
 
-![](body_lvm_med.jpg)
+<p align="center">
+   <img src="body_lvm_med.jpg" alt="drawing" width="698.5" heigh="461"/>
+</p>
 
-![](lvm_med_compare.jpg)
+<p align="center">
+   <img src="lvm_med_compare.jpg" alt="drawing" width="471.6" heigh="520"/>
+</p>
 
 ## Table of contents
 * [News](#news)
@@ -87,7 +91,7 @@ You could download the `Brain` dataset via Kaggle's [`Brain Tumor Classification
 
 ### For VinDr
 You can download dataset from this link drive: [`VinDr`](https://drive.google.com/drive/folders/1DYnxgGA83DaZRds1C2xlkMCjTqeE8s-s?usp=sharing) and put the dataset into the folder object_detection. 
-If you want to build the dataset by yourself, you can refer the script convert_to_coco.py inside folder object_detection and run it.
+If you want to build the dataset by yourself, you can refer the script ```convert_to_coco.py``` inside folder object_detection and run it.
 ```bash
 python convert_to_coco.py # Note, please check all links inside the code
 ```
