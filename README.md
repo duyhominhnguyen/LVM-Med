@@ -61,9 +61,6 @@ For running **Fine-tune for downstream tasks using ResNet-50** in **Section 4f**
 ### For Brain dataset
 You could download the `Brain` dataset via Kaggle's [`Brain Tumor Classification (MRI)`](https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri)
 
-### For FGADR dataset
-After you download the FGADR dataset, you shall get your data from `Seg-set` folder and consider it as your FGADR dataset.
-
 ### Other
 First you should download the respective dataset that you need to run to the [`dataset_demo`](/dataset_demo/) folder. To get as close results as your work as possible, you could prepare some of our specific dataset (which are not pre-distributed) the same way as we do:
 ```bash
@@ -71,7 +68,9 @@ python prepare_dataset.py -ds [dataset_name]
 ```
 such that: `dataset_name` is the name of dataset that you would like to prepare. After that, you should change paths to your loaded dataset on our pre-defined yaml file in [`dataloader/yaml_data`](/dataloader/yaml_data/).
 
-Currently support for `Kvasir`, `BUID`, `FGADR`, `MMWHS_MR_Heart` and `MMWHS_CT_Heart`
+Currently support for `Kvasir`, `BUID`, `FGADR`, `MMWHS_MR_Heart` and `MMWHS_CT_Heart`.
+
+**Note:** You should change your dataset name into the correct format (i.e., Kvasir, BUID) as our current support dataset name. Or else it won't work as expected.
 
 ## 4. How to reproduce our results ?
 
