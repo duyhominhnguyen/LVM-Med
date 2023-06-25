@@ -55,8 +55,6 @@ For running **Fine-tune for downstream tasks using ResNet-50** in **Section 4f**
 /resnet.py`](segmentation_models_pytorch/encoders/resnet.py) )
 3. Then `pip install segmentation-models-pytorch` to install its dependencies
 
-
-
 ## 3. Prepare dataset
 ### For Brain dataset
 You could download the `Brain` dataset via Kaggle's [`Brain Tumor Classification (MRI)`](https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri)
@@ -112,7 +110,7 @@ python3 zero_shot_segmentation.py -c dataloader/yaml_data/buid_sam.yml
 ```
 
 ### d. Prompt-based segmentation with Fine-tune SAM (MedSAM) for downstream tasks
-You could also see the examples of [`Prompt_Demo.ipynb`](/notebook/Prompt_Demo.ipynb) for results visualization using prompt-based MedSAM.
+You could also see the examples of [`Prompt_Demo.ipynb`](/notebook/Prompt_Demo.ipynb) for results visualization using prompt-based MedSAM with pretrained weight for each model in demo is [here](https://drive.google.com/drive/u/0/folders/1tjrkyEozE-98HAGEtyHboCT2YHBSW15U) and put it in [`working_dir/checkpoints`](./working_dir/checkpoints/).
 #### Train
 ```bash
 python3 medsam.py -c dataloader/yaml_data/buid_sam.yml 
