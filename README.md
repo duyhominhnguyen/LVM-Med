@@ -213,7 +213,7 @@ python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_froz
 ```
 ### iii) Object Detection
 We demonstrate using LVM-Med ResNet-50 for object detection with Vin-Dr dataset. We use Faster-RCNN for the network backbone.
-You can access[`Object Detection`](./Object_Detection) folder for more details.
+You can access [`object_detection`](./object_detection) folder for more details.
 
 ## Citation
 Please cite this paper if it helps your research:
