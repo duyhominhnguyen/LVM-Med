@@ -33,7 +33,7 @@ After installing the pre-trained models, please place them in [`checkpoints`](/c
 - The code and pre-trained model for **ViT-B** **end-to-end** segmentation will be uploaded soon!!!
 
 ### For Segment Anything Model
-- In this work, we use base version of SAM which is `sam_vit_b`. You could browse the [`original repo`](https://github.com/facebookresearch/segment-anything) for pretrained weight. After that, you shall put it in ['./working_dir/sam_vit_b_01ec64.pth'](./working_dir/) folder to use yaml properly.
+- In this work, we use base version of SAM which is `sam_vit_b`. You could browse the [`original repo`](https://github.com/facebookresearch/segment-anything) for pretrained weight. After that, you shall put it in [`./working_dir/sam_vit_b_01ec64.pth`](./working_dir/) folder to use yaml properly.
 
 ## 2. Project setup
 
