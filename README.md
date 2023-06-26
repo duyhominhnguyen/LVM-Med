@@ -163,19 +163,19 @@ python3 medsam.py -c dataloader/yaml_data/buid_sam.yml
 python3 medsam.py -c dataloader/yaml_data/buid_sam.yml -test
 ```
 
-[//]: # (You could also see the examples of [`Prompt_Demo.ipynb`]&#40;/notebook/Prompt_Demo.ipynb&#41; for results visualization using prompt-based MedSAM with pretrained weight for each model in demo is [here]&#40;https://drive.google.com/drive/u/0/folders/1tjrkyEozE-98HAGEtyHboCT2YHBSW15U&#41; and put it in [`working_dir/checkpoints`]&#40;./working_dir/checkpoints/&#41;.)
+You could also check our example notebook [`Prompt_Demo.ipynb`](/notebook/Prompt_Demo.ipynb) for results visualization using prompt-based MedSAM and prompt-based SAM with LVM-Med's encoder. Pretrained weight for each model in demo is [here](https://drive.google.com/drive/u/0/folders/1tjrkyEozE-98HAGEtyHboCT2YHBSW15U). Please download trained models of LVM-Med and MedSAM and put them into [`working_dir/checkpoints`](./working_dir/checkpoints/) folder for running aforementioned notebook file.
 
 **b. Prompt-based segmentation as [MedSAM](https://github.com/bowang-lab/MedSAM) but using LVM-Med's Encoder.**
 
 The training script is similar as MedSAM case but specify the weight model by ```-lvm_encoder```.
 #### Train
 ```bash
-python3 medsam.py -c dataloader/yaml_data/buid_lvm_med_sam.yml -lvm_encoder workdir/pretrained/vit_b_largescale_dim256.pth
+python3 medsam.py -c dataloader/yaml_data/buid_lvm_med_sam.yml -lvm_encoder ./working_dir/checkpoints/lvmmed_vit.pth
 ```
 
 #### Test
 ```bash
-python3 medsam.py -c dataloader/yaml_data/buid_lvm_med_sam.yml -test
+python3 medsam.py -c dataloader/yaml_data/buid_lvm_med_sam.yml -lvm_encoder ./working_dir/checkpoints/lvmmed_vit.pth -test
 ```
 You can check our notebook[`Prompt_Demo.ipynb`](/notebook/Prompt_Demo.ipynb)for visualization.
 
