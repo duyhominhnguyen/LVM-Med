@@ -3,7 +3,7 @@ base:
   is_SAMVIT: 1
   dataset_name: brain
   gpu_id: '3'
-  original_checkpoint: 'lvm-med-samvit' 
+  original_checkpoint: 'lvm-med-vit' 
   best_valid_model_checkpoint: './working_dir/checkpoint/'
   frozen_eval: 1
   model: 'fcns'
