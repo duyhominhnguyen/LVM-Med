@@ -24,7 +24,7 @@ random.seed(seed)
 
 weight_collections = {
     "resnet50": {
-        "lvm-med": "./checkpoints/lvmmed_resnet50.torch",
+        "lvm-med-resnet": "./checkpoints/lvmmed_resnet50.torch",
     }
 }
 
