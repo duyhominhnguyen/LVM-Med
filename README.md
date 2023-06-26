@@ -59,7 +59,7 @@ current contrastive and instance-based SSL.
 After downloading the pre-trained models, please place them in [`checkpoints`](/checkpoints/) folder to use. 
 
 - For **Resnet-50**, we demo **end-to-end** segmentation/classification/object detection.
-- For **ViT-B**, we demo **prompt-based** segmentation.
+- For **ViT-B**, we demo **prompt-based** segmentation using bounding-boxes.
 
 **Important Note:** please check[```dataset.md```](/lmv-med-training-data/dataset.md) to avoid potential leaking testing data when using our model.
 
