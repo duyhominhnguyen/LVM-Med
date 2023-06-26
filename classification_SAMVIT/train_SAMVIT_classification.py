@@ -22,7 +22,7 @@ from model.unet_vit_classification import vit_encoder_b, load_weight_for_vit_enc
 
 new_settings = {
     "vit": {
-        "lvm-med-samvit": '/checkpoints/lvmmed_vit.pth',
+        "lvm-med-vit": '/checkpoints/lvmmed_vit.pth',
     }
 }
 
