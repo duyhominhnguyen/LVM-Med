@@ -18,6 +18,9 @@ current contrastive and instance-based SSL.
 * [Prerequisites](#prerequisites)
 * [Preparing Dataset](#preparing-datasets)
 * [Downstream Tasks](#downstream-tasks)
+     * [Segmentation](#segmentation)
+     * [Image Classification](#image-classification)
+     * [Object Detection](#object-detection)
 * [Citation](#citation)
 * [Related Work](#related-work)
 * [License](#license)
@@ -104,7 +107,7 @@ Currently support for `Kvasir`, `BUID`, `FGADR`, `MMWHS_MR_Heart` and `MMWHS_CT_
 **Note:** You should change your dataset name into the correct format (i.e., Kvasir, BUID) as our current support dataset name. Or else it won't work as expected.
 
 ## Downstream Tasks
-### i) Segmentation
+### Segmentation
 ### 1. End-to-End Segmentation
 **a) Training Phase:**
 
@@ -181,7 +184,7 @@ The SAM model without any finetuning using bounding box-based prompts can be don
 ```bash
 python3 zero_shot_segmentation.py -c dataloader/yaml_data/buid_sam.yml
 ```
-### ii) Image Classification
+### Image Classification
 We provide training and testing scripts using LVM-Med's models for Brain Tumor Classification and Diabetic Retinopathy Grading in FGADR dataset (Table 5 in main paper and Table 12 in Appendix).
 
 **a. Training with FGADR**
@@ -214,7 +217,7 @@ python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_froz
 # Freeze all and fine-tune multi-layer FCN only
 python train_classification.py -c ./dataloader/yaml_data/fgadr_endtoend_R50_frozen_fcns.yml -test
 ```
-### iii) Object Detection
+### Object Detection
 We demonstrate using LVM-Med ResNet-50 for object detection with Vin-Dr dataset. We use Faster-RCNN for the network backbone.
 You can access [`object_detection`](./object_detection) folder for more details.
 
