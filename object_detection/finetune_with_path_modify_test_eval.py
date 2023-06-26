@@ -143,6 +143,7 @@ def train(experiment_name, weight_path, labeled_dataset_percent, epochs, batch_s
   model = build_detector(cfg.model, train_cfg=cfg.get('train_cfg'))
   datasets = [train_dataset]
   cfg.workflow = [('train', 1)]
+  cfg.device = 'cuda'
   # train model
   train_detector(model, datasets, cfg, distributed=False, validate=True)
 
