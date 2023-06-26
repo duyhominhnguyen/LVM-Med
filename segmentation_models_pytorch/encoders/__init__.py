@@ -74,8 +74,8 @@ def get_encoder(name, in_channels=3, depth=5, weights=None, output_stride=32, **
                 weights, name, list(encoders[name]["pretrained_settings"].keys()),
             ))
         try:
-            if 'efficientnet-b0' in settings["url"]:
-                weights = torch.load('/home/caduser/KOTORI/WEIGHTS/Supervised/efficientnet-b0-355c32eb.pth', map_location = torch.device('cpu'))
+            if 'lvm-med' in settings["url"]:
+                weights = torch.load('./checkpoints/lvm_med_resnet50.pth', map_location = torch.device('cpu'))
             else:
                 weights = torch.load(settings["url"], map_location=torch.device('cpu'))
             trunk_weights = weights["classy_state_dict"]["base_model"]["model"]["trunk"]
