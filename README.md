@@ -109,7 +109,7 @@ Currently support for `Kvasir`, `BUID`, `FGADR`, `MMWHS_MR_Heart` and `MMWHS_CT_
 
 ## Downstream Tasks
 ### i) Segmentation
-##### 1. End-to-End Segmentation
+### 1. End-to-End Segmentation
 **a) Training Phase:**
 
 **Fine-tune for downstream tasks using ResNet-50**
@@ -118,6 +118,13 @@ Currently support for `Kvasir`, `BUID`, `FGADR`, `MMWHS_MR_Heart` and `MMWHS_CT_
 python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_R50.yml
 ```
 Chaning name of dataset in ``.yml`` configs in [```./dataloader/yaml_data/```](./dataloader/yaml_data/) for other experiments.
+
+**Note**: to apply segmentation models (2D or 3D) using ResNet-50, we suggest normalizing gradient for stable training phases by set:
+
+```bash
+clip_value = 1
+torch.nn.utils.clip_grad_norm_(net.parameters(), clip_value)
+```
 
 
 [//]: # (#### Fine-tune for downstream tasks using SAM's VIT)
@@ -133,7 +140,7 @@ Chaning name of dataset in ``.yml`` configs in [```./dataloader/yaml_data/```](.
 ```bash
 python train_segmentation.py -c ./dataloader/yaml_data/buid_endtoend_R50.yml -test
 ```
-For end-to-end version using SAM's ViT, we will soon release a better version than reported results in the paper.
+For the end-to-end version using SAM's ViT, we will soon release a better version than the reported results in the paper.
 
 [//]: # (#### SAM's ViT version)
 
@@ -143,7 +150,7 @@ For end-to-end version using SAM's ViT, we will soon release a better version th
 
 [//]: # (```)
 
-#### 2. Prompt-based Segmentation with ViT-B
+### 2. Prompt-based Segmentation with ViT-B
 **a. Prompt-based segmentation with fined-tune decoder of SAM ([MedSAM](https://github.com/bowang-lab/MedSAM)).**
 
 We run the MedSAM baseline to compare performance by:
