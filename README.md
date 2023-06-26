@@ -82,7 +82,7 @@ To **fine-tune for downstream tasks using ResNet-50** in **Section 4f**, we util
 
 1. `git clone https://github.com/qubvel/segmentation_models.pytorch.git` and `cd segmentation_models_pytorch`
 2. Access this path in the smp package: `/encoders/resnet.py` and add your download pre-trained weight (you can see our example in [`segmentation_models_pytorch/encoders
-/resnet.py`](segmentation_models_pytorch/encoders/resnet.py) )
+/resnet.py`](segmentation_models_pytorch/encoders/resnet.py) at line 77.)
 3. Then `pip install segmentation-models-pytorch` to install its dependencies
 
 ## Preparing dataset
