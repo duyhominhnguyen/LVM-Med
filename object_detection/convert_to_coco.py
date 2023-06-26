@@ -143,7 +143,7 @@ train_out_file = 'data/train_annotations.json'
 valid_out_file = 'data/valid_annotations.json'
 test_out_file = 'data/test_annotations.json'
 
-all_images_folder = '../vinbigdata/train'
+all_images_folder = 'vinbigdata/train'
 all_files = os.listdir(all_images_folder)
 all_files = np.sort(np.array(all_files))
 
@@ -155,7 +155,7 @@ for data in [data_train, data_valid, data_test]:
   data['images'] = []
   data['annotations'] = []
 
-all_annotations = pd.read_csv('../vinbigdata/train.csv')
+all_annotations = pd.read_csv('vinbigdata/train.csv')
 all_annotations = all_annotations[all_annotations.class_id != 14]
 all_annotations['image_path'] = all_annotations['image_id'].map(lambda id:
   os.path.join(all_images_folder, str(id) + '.png'))
