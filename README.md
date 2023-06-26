@@ -14,13 +14,10 @@ current contrastive and instance-based SSL.
 
 ## Table of contents
 * [News](#news)
-* [LVM-Med Pretrained Models](#Pretrained-models)
+* [LVM-Med Pretrained Models](#lvm-med-pretrained-models)
 * [Prerequisites](#prerequisites)
-* [Preparing Dataset](#preparing_datasets)
-* [Downstream Tasks](#downstream)
-    * [i) Segmentation](#segmentation)
-    * [ii) Image Classification](#image_classification)
-    * [iii) Object Detection](#object_detection)
+* [Preparing Dataset](#preparing-datasets)
+* [Downstream Tasks](#downstream-tasks)
 * [Citation](#citation)
 * [Related Work](#related-work)
 * [License](#license)
@@ -85,7 +82,7 @@ To **fine-tune for downstream tasks using ResNet-50** in **Section 4f**, we util
 /resnet.py`](segmentation_models_pytorch/encoders/resnet.py) at line 77.)
 3. Then `pip install segmentation-models-pytorch` to install its dependencies
 
-## Preparing dataset
+## Preparing datasets
 ### For the Brain Tumor Dataset
 You could download the `Brain` dataset via Kaggle's [`Brain Tumor Classification (MRI)`](https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri) and change the name into ```BRAIN```.
 
