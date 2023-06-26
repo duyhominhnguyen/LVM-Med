@@ -281,7 +281,6 @@ dependencies:
     - ruamel-yaml-clib==0.2.7
     - safetensors==0.3.1
     - scikit-learn==0.24.1
-    - segmentation-models-pytorch
     - self-attention-cv==1.2.3
     - setuptools==59.5.0
     - simpleitk==2.1.1
