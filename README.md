@@ -187,7 +187,7 @@ The SAM model without any finetuning using bounding box-based prompts can be don
 python3 zero_shot_segmentation.py -c dataloader/yaml_data/buid_sam.yml
 ```
 ### Image Classification
-We provide training and testing scripts using LVM-Med's models for Brain Tumor Classification and Diabetic Retinopathy Grading in FGADR dataset (Table 5 in main paper and Table 12 in Appendix).
+We provide training and testing scripts using LVM-Med's ResNet-50 models for Brain Tumor Classification and Diabetic Retinopathy Grading in FGADR dataset (Table 5 in main paper and Table 12 in Appendix). The version with ViT models will be updated soon.
 
 **a. Training with FGADR**
 ```bash
