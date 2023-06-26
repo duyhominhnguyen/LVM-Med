@@ -7,8 +7,9 @@ conda activate vin
 
 ## 2. Convert dataset to Coco format
 We illustrate LVM-Med ResNet-50 for VinDr dataset, which detects 14 different regions in X-ray images.
+You can download the dataset from this link [`VinDr`](https://www.kaggle.com/datasets/awsaf49/vinbigdata-512-image-dataset) and put the folder vinbigdata into the folder object_detection. To build the dataset, after downloading the dataset, you can refer to the script ```convert_to_coco.py``` inside the folder object_detection and run it.
 ```bash
-python convert_to_coco.py # Note, please check again if this file is correct. Don't run this file again.
+python convert_to_coco.py # Note, please check links inside the code in lines 146 and 158 to build the dataset correctly
 ```
 
 ## 3. Set train, valid, test folders
