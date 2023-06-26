@@ -53,26 +53,7 @@ class vit_encoder_b(nn.Module):
 
 def load_weight_for_vit_encoder(pretrained, settings): 
     weight = None
-    if pretrained == 'sam':
-        path =  settings['vit'][pretrained]
-        print(f'Pretrained path :  {path}')
-        weight = torch.load(path)
-        print(f'Number of params in original checkpoint : {len(weight)}')
-        for key in list(weight.keys()):
-            if 'image_encoder.blocks.'  in key:
-                weight[key.replace('image_encoder.blocks.', 'model.blocks.')] = weight[key]
-                del weight[key]
-            else :
-                del weight[key]
-    elif pretrained == 'ssl':
-        path =  settings['vit'][pretrained]
-        print(f'Pretrained path :  {path}')
-        weight = torch.load(path, map_location = 'cpu')
-        print(f'Number of params in original checkpoint : {len(weight)}')
-        for key in list(weight.keys()):
-            weight['model.' + key] = weight[key]
-            del weight[key]
-    elif pretrained == 'lvm-med-samvit':
+    if pretrained == 'lvm-med-vit':
         path =  settings['vit'][pretrained]
         print(f'Pretrained path :  {path}')
         weight = torch.load(path, map_location = 'cpu')
