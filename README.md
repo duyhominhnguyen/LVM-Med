@@ -60,10 +60,11 @@ After downloading the pre-trained models, please place them in [`checkpoints`](/
 - For **Resnet-50**, we demo **end-to-end** segmentation/classification/object detection.
 - For **ViT-B**, we demo **prompt-based** segmentation.
 
-**For Segment Anything Model**
-- In this work, we use base version of SAM which is `sam_vit_b`. You could browse the [`original repo`](https://github.com/facebookresearch/segment-anything) for pretrained weight. After that, you shall put it in [`./working_dir/sam_vit_b_01ec64.pth`](./working_dir/) folder to use yaml properly.
-
 **Important Note:** please check[```dataset.md```](/lmv-med-training-data/dataset.md) to avoid potential leaking testing data when using our model.
+
+**Segment Anything Model-related Experiments**
+- For zero-shot segmentation experiments using [SAM](https://github.com/facebookresearch/segment-anything) model, we use the base architecture `sam_vit_b`. You could browse the [`original repo`](https://github.com/facebookresearch/segment-anything) for this pre-trained weight and put it in [`./working_dir/sam_vit_b_01ec64.pth`](./working_dir/) folder to use yaml properly.
+
 
 ## Prerequisites
 
@@ -90,10 +91,11 @@ To **fine-tune for downstream tasks using ResNet-50** in **Section 4f**, we util
 You could download the `Brain` dataset via Kaggle's [`Brain Tumor Classification (MRI)`](https://www.kaggle.com/datasets/sartajbhuvaji/brain-tumor-classification-mri) and change the name into ```BRAIN```.
 
 ### For VinDr
-You can download dataset from this link [`VinDr`](https://www.kaggle.com/datasets/awsaf49/vinbigdata-512-image-dataset) and put the folder vinbigdata into the folder object_detection. To build the dataset, after downloading the dataset, you can refer the script ```convert_to_coco.py``` inside folder object_detection and run it.
+You can download the dataset from this link [`VinDr`](https://www.kaggle.com/datasets/awsaf49/vinbigdata-512-image-dataset) and put the folder ```vinbigdata``` into the folder ```object_detection```. To build the dataset, after downloading the dataset, you can run script ```convert_to_coco.py``` inside the folder object_detection.
 ```bash
 python convert_to_coco.py # Note, please check links inside the code in lines 146 and 158 to build dataset correctly
 ```
+More information can be found in [```object_detection```](./object_detection).
 
 ### Others
 First you should download the respective dataset that you need to run to the [`dataset_demo`](/dataset_demo/) folder. To get as close results as your work as possible, you could prepare some of our specific dataset (which are not pre-distributed) the same way as we do:
