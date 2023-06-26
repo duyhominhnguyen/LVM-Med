@@ -140,30 +140,10 @@ class DecoderBottleneck(nn.Module):
     
 def load_weight_for_vit_encoder(pretrained):
     
-    weight = None
-    if pretrained == 'sam':
-        path =  '/home/caduser/KOTORI/hoang_graph_matching_v1/sam_vit_base.pth'
-        print(f'Pretrained path for SAM encoder :  {path}')
-        weight = torch.load(path, map_location ='cpu')
-        print(f'Number of params in original checkpoint : {len(weight)}')
-        for key in list(weight.keys()):
-            if 'image_encoder.blocks.'  in key:
-                weight[key.replace('image_encoder.blocks.', 'model.blocks.')] = weight[key]
-                del weight[key]
-            else :
-                del weight[key]
-    elif pretrained == 'ssl_small':  
-        path =  '/home/caduser/KOTORI/hoang_graph_matching_v1/vit_b_local_2_1.pth'
-        print(f'Pretrained path for our ssl method :  {path}')
-        weight = torch.load(path, map_location ='cpu')
-        print(f'Number of params in original checkpoint : {len(weight)}')
-        for key in list(weight.keys()):
-            weight['model.' + key] = weight[key]
-            del weight[key]
-            
-    elif pretrained == 'ssl_large':
-        path = '/home/caduser/KOTORI/hoang_graph_matching_v1/vit_b_largescale_neck_155.pth'
-        print(f'Pretrained path for our ssl LARGE SCALE method :  {path}')
+    weight = None     
+    elif pretrained == 'lvm-med-vit':
+        path = './checkpoints/lvmmed_vit.torch'
+        print(f'Pretrained path of LVM-MED-VIT :  {path}')
         weight = torch.load(path, map_location ='cpu')
         print(f'Number of params in original checkpoint : {len(weight)}')
         for key in list(weight.keys()):
