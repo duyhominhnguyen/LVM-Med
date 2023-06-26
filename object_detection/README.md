@@ -6,6 +6,7 @@ conda activate vin
 ```
 
 ## 2. Convert dataset to Coco format
+We illustrate LVM-Med ResNet-50 for VinDr dataset, which detects 14 different regions in X-ray images.
 ```bash
 python convert_to_coco.py # Note, please check again if this file is correct. Don't run this file again.
 ```
