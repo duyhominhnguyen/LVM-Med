@@ -76,7 +76,7 @@ new_settings = {
         "swsl": "https://dl.fbaipublicfiles.com/semiweaksupervision/model_files/semi_weakly_supervised_resnet18-118f1556.pth"
     },
     "resnet50": {
-        "lvm-med-resnet" : "/lvm_med_weights/lvmmed_resnet50.torch",
+        "lvm-med-resnet" : "/lvm_med_weights/lvmmed_resnet50.torch", # <- set absolute path to your weights here,
     },
     "resnext50_32x4d": {
         "imagenet": "https://download.pytorch.org/models/resnext50_32x4d-7cdf4587.pth",
