@@ -79,7 +79,7 @@ conda env create -f lvm_med.yml
 conda activate lvm_med
 ```
 
-To **fine-tune for downstream tasks using ResNet-50** in **Section 4f**, we utilize U-Net from `segmentation-models-pytorch` package. To install this library, you can do the following ones: 
+To **fine-tune for [Segmentation](#segmentation) using ResNet-50**, we utilize U-Net from `segmentation-models-pytorch` package. To install this library, you can do the following ones: 
 
 1. `git clone https://github.com/qubvel/segmentation_models.pytorch.git` and `cd segmentation_models_pytorch`
 2. Access this path in the smp package: `/encoders/resnet.py` and add your download pre-trained weight (you can see our example in [`segmentation_models_pytorch/encoders
