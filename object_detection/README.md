@@ -2,7 +2,7 @@
 
 ## 1. Activate conda environment
 ```bash
-conda activate vin
+conda activate lvm_med 
 ```
 
 ## 2. Convert dataset to Coco format
