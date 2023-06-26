@@ -5,11 +5,11 @@ LVM-Med was trained with ~ 1.2 million medical images collected from 55 datasets
 current contrastive and instance-based SSL.
 
 <p align="center">
-   <img src="body_lvm_med.jpg" alt="drawing" width="698.5" heigh="461"/>
+   <img src="assets/body_lvm_med.jpg" alt="drawing" width="698.5" heigh="461"/>
 </p>
 
 <p align="center">
-   <img src="lvm_med_compare.jpg" alt="drawing" width="471.6" heigh="520"/>
+   <img src="assets/lvm_med_compare.jpg" alt="drawing" width="471.6" heigh="520"/>
 </p>
 
 ## Table of contents
