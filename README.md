@@ -26,6 +26,7 @@ current contrastive and instance-based SSL.
 * [License](#license)
 
 ## News
+- :email: If you want to have other architecture, send us a request by email or create an Issue. If the requests are enough, we will train them.
 - :construction: Cominng soon: [ConvNext](https://arxiv.org/abs/2201.03545) architecture trained by LVM-Med.
 - :construction: Coming soon: ViT architectures for end-to-end segmentation with better performance reported in the paper.
 - **25/06/2023**: We release two pre-trained models of LVM-Med: ResNet-50 and ViT-B. Providing scripts for downstream tasks.
