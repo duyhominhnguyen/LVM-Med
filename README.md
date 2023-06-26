@@ -56,7 +56,7 @@ current contrastive and instance-based SSL.
   </tr>
 </table>
 
-After downloading the pre-trained models, please place them in [`checkpoints`](/checkpoints/) folder to use. 
+After downloading the pre-trained models, please place them in [`lvm_med_weights`](/lvm_med_weights/) folder to use. 
 
 - For **Resnet-50**, we demo **end-to-end** segmentation/classification/object detection.
 - For **ViT-B**, we demo **prompt-based** segmentation using bounding-boxes.
