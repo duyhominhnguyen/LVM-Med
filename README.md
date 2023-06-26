@@ -52,7 +52,7 @@ current contrastive and instance-based SSL.
     <td>86.0M</td>
     <td>85.80</td>
     <td>73.85</td>
-    <td> <a href="https://drive.google.com/file/d/14bX8wdw-c3VUw3XPAtFMB-wFE03q0eCi/view?usp=sharing">backbone</a> </td>
+    <td> <a href="https://drive.google.com/file/d/17WnE34S0ylYiA3tMXobH8uUrK_mCVPT4/view?usp=sharing">backbone</a> </td>
   </tr>
 </table>
 
