@@ -126,7 +126,7 @@ Chaning name of dataset in ``.yml`` configs in [```./dataloader/yaml_data/```](.
 clip_value = 1
 torch.nn.utils.clip_grad_norm_(net.parameters(), clip_value)
 ```
-
+See examples in file [```/segmentation_2d/train_R50_seg_adam_optimizer_2d.py```](./segmentation_2d/train_R50_seg_adam_optimizer_2d.py)  lines 129-130.
 
 [//]: # (#### Fine-tune for downstream tasks using SAM's VIT)
 
