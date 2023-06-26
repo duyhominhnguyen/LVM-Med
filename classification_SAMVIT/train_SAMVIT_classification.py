@@ -22,11 +22,7 @@ from model.unet_vit_classification import vit_encoder_b, load_weight_for_vit_enc
 
 new_settings = {
     "vit": {
-        "ssl" : '/home/caduser/KOTORI/hoang_graph_matching_v1/vit_b_local_2_1.pth',
-        "lvm-med-samvit": '/home/caduser/KOTORI/hoang_graph_matching_v1/vit_b_largescale_neck_155.pth',
-        "sam" : '/home/caduser/KOTORI/hoang_graph_matching_v1/sam_vit_base.pth',
-        "flava"   : None,
-        'scratch' : None,
+        "lvm-med-samvit": '/checkpoints/lvmmed_vit.pth',
     }
 }
 
