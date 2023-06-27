@@ -150,7 +150,7 @@ def train_net(net,
 
                     if (val_score > best_value):
                         best_value = val_score
-                        logging.info("New best iou score: {} at epochs {}".format(best_value, epoch+1))
+                        logging.info("New best dice score: {} at epochs {}".format(best_value, epoch+1))
                         torch.save(net.state_dict(), str(dir_checkpoint/'checkpoint_{}_{}_best_{}.pth'.format(cfg.base.dataset_name, cfg.base.original_checkpoint, str(trial))))
 
                     logging.info('Validation Dice score: {}, IoU score {}'.format(val_dice_score, val_iou_score))
