@@ -323,3 +323,4 @@ dependencies:
     - yacs==0.1.8
     - yapf==0.32.0
     - yarl==1.9.2
+    - monai==1.1.0
