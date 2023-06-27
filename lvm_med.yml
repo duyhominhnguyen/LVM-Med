@@ -247,7 +247,7 @@ dependencies:
     - nbclient==0.6.3
     - nibabel==3.2.2
     - nodeenv==1.6.0
-    - numpy==1.19.5
+    - numpy==1.21.5
     - oauthlib==3.2.0
     - omegaconf==2.0.6
     - opencv-python==4.5.5.64
@@ -324,3 +324,4 @@ dependencies:
     - yapf==0.32.0
     - yarl==1.9.2
     - monai==1.1.0
+    - ensemble-boxes==1.0.8
