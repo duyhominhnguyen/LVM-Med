@@ -82,7 +82,7 @@ conda activate lvm_med
 
 To **fine-tune for [Segmentation](#segmentation) using ResNet-50**, we utilize U-Net from `segmentation-models-pytorch` package. To install this library, you can do the following ones: 
 
-1. `git clone https://github.com/qubvel/segmentation_models.pytorch.git`, change folder name 'segmentation_models.pytorch' to 'segmentation_models_pytorch', and `cd segmentation_models_pytorch`
+1. `git clone https://github.com/qubvel/segmentation_models.pytorch.git`, change folder name `segmentation_models.pytorch` to `segmentation_models_pytorch`, and `cd segmentation_models_pytorch`
 2. Access this path in the smp package: `/encoders/resnet.py` and add your download pre-trained weight (you can see our example in [`segmentation_models_pytorch/encoders/resnet.py`](segmentation_models_pytorch/encoders/resnet.py) at lines 78-79.)
 3. Then `pip install segmentation-models-pytorch==0.2.0` to install its dependencies
 
