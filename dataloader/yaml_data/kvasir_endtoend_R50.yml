@@ -5,7 +5,7 @@ base:
   is_SAMVIT: 0
   dataset_name: kvasir
   gpu_id: '1'
-  original_checkpoint: 'vissl-1M-graph-match' # Original checkpoint from segment-anything project
+  original_checkpoint: 'lvm_med_resnet' # Original checkpoint from segment-anything project
   best_valid_model_checkpoint: './working_dir/checkpoint/Kvasir_R50'
   image_shape: 224
 
