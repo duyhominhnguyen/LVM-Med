@@ -9,7 +9,7 @@ current contrastive and instance-based SSL.
 </p>
 
 <p align="center">
-   <img src="assets/lvm_med_compare.jpg" alt="drawing" width="471.6" heigh="520"/>
+   <img src="assets/lvm_med_teaser.gif" alt="drawing" width="471.6" heigh="520"/>
 </p>
 
 ## Table of contents
