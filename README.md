@@ -85,7 +85,7 @@ To **fine-tune for [Segmentation](#segmentation) using ResNet-50**, we utilize U
 1. `git clone https://github.com/qubvel/segmentation_models.pytorch.git`
 2. `cd segmentation_models.pytorch; pip install -e .`
 4. Copy file [`__init__.py`](segmentation_models_pytorch_example/encoders/__init__.py) and  [`resnet.py`](segmentation_models_pytorch_example/encoders/resnet.py) in [`segmentation_models_pytorch_example`](segmentation_models_pytorch_example) folder
-5. Paste [`__init__.py`](segmentation_models_pytorch_example/encoders/__init__.py) and [`resnet.py`](segmentation_models_pytorch_example/encoders/resnet.py) in the clone `segmentation_models.pytorch` package to configure new pre-trained models
+5. Paste [`__init__.py`](segmentation_models_pytorch_example/encoders/__init__.py) and [`resnet.py`](segmentation_models_pytorch_example/encoders/resnet.py) in the folder `encoders` of clone `segmentation_models.pytorch/segmentation_models_pytorch/` package to configure new pre-trained models
 
 
 ## Preparing datasets
