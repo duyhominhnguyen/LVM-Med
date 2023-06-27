@@ -84,7 +84,7 @@ To **fine-tune for [Segmentation](#segmentation) using ResNet-50**, we utilize U
 
 1. `git clone https://github.com/qubvel/segmentation_models.pytorch.git`
 2. `cd segmentation_models.pytorch; pip install -e .`
-3. Access these 2 files in smp package: `__init__.py` and  `resnet.py` and add our pretrained weight (You can see our example for [`__init__.py`](segmentation_models_pytorch_example/encoders/__init__.py) at line 85-95 and [`resnet.py`](segmentation_models_pytorch_example/encoders/resnet.py) at line 81
+3. Access these 2 files in smp package: `__init__.py` and  `resnet.py` via 'segmentation_models_pytorch_example/encoders/' and add our pretrained weight (You can see our example for [`__init__.py`](segmentation_models_pytorch_example/encoders/__init__.py) at line 85-95 and [`resnet.py`](segmentation_models_pytorch_example/encoders/resnet.py) at line 81
 
 
 ## Preparing datasets
