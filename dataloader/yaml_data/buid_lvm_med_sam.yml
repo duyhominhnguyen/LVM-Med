@@ -20,9 +20,9 @@ train:
   num_epochs: 20
 
 dataloader:
-  train_dir_img: './working_dir/BUID/train'
-  train_dir_mask: './working_dir/BUID/train_labels'
-  valid_dir_img: './working_dir/BUID/valid'
-  valid_dir_mask: './working_dir/BUID/valid_labels'
-  test_dir_img: './working_dir/BUID/test'
-  test_dir_mask: './working_dir/BUID/test_labels'
+  train_dir_img: './dataset_demo/BUID/train'
+  train_dir_mask: './dataset_demo/BUID/train_labels'
+  valid_dir_img: './dataset_demo/BUID/valid'
+  valid_dir_mask: './dataset_demo/BUID/valid_labels'
+  test_dir_img: './dataset_demo/BUID/test'
+  test_dir_mask: './dataset_demo/BUID/test_labels'
