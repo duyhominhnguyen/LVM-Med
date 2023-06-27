@@ -26,5 +26,5 @@ bash command.sh
 
 ## 5. Train from current epochs:
 ```bash
-CUDA_VISIBLE_DEVICES=5 python finetune_object_detect.py --experiment-name 'lvm-med-r50' --weight-path ./checkpoints/converted_vissl_ssl_graph_large.torch --batch-size 16 --optim adam --clip 1 --lr 0.0001 --epochs 40 --labeled-dataset-percent 1.0 --resume
+CUDA_VISIBLE_DEVICES=5 python finetune_object_detect.py --experiment-name 'lvm-med-r50' --weight-path ../lvm_med_weights/lvmmed_resnet.torch --batch-size 16 --optim adam --clip 1 --lr 0.0001 --epochs 40 --labeled-dataset-percent 1.0 --resume
 ```
