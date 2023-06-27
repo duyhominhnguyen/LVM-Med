@@ -74,7 +74,7 @@ def get_config(base_directory='.'):
   cfg.log_config.interval = 10
 
   # We can set the checkpoint saving interval to reduce the storage cost
-  cfg.checkpoint_config.interval = 20
+  cfg.checkpoint_config.interval = 1
 
   # Set seed thus the results are more reproducible
   cfg.seed = 1
