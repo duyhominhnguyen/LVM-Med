@@ -5,7 +5,7 @@ base:
   is_SAMVIT: 0
   dataset_name: buidnewprocess
   gpu_id: '5'
-  original_checkpoint: 'lvm_med_resnet' # change checkpoints here
+  original_checkpoint: 'lvm-med-resnet' # change checkpoints here
   best_valid_model_checkpoint: './working_dir/checkpoint/BUID_R50'
   image_shape: 256
 
