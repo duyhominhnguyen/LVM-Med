@@ -61,7 +61,7 @@ After downloading the pre-trained models, please place them in [`lvm_med_weights
 - For **Resnet-50**, we demo **end-to-end** segmentation/classification/object detection.
 - For **ViT-B**, we demo **prompt-based** segmentation using bounding-boxes.
 
-**Important Note:** please check[```dataset.md```](/lmv-med-training-data/dataset.md) to avoid potential leaking testing data when using our model.
+**Important Note:** please check[```dataset.md```](/lmv-med-training-data/README.md) to avoid potential leaking testing data when using our model.
 
 **Segment Anything Model-related Experiments**
 - For all experiments using [SAM](https://github.com/facebookresearch/segment-anything) model, we use the base architecture of SAM which is `sam_vit_b`. You could browse the [`original repo`](https://github.com/facebookresearch/segment-anything) for this pre-trained weight and put it in [`./working_dir/sam_vit_b_01ec64.pth`](./working_dir/) folder to use yaml properly.
