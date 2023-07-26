@@ -67,7 +67,7 @@ After downloading the pre-trained models, please place them in [`lvm_med_weights
 - For all experiments using [SAM](https://github.com/facebookresearch/segment-anything) model, we use the base architecture of SAM which is `sam_vit_b`. You could browse the [`original repo`](https://github.com/facebookresearch/segment-anything) for this pre-trained weight and put it in [`./working_dir/sam_vit_b_01ec64.pth`](./working_dir/) folder to use yaml properly.
 
 ## Further Training LVM-Med on Large Datasets
-
+We release some further pre-trained weight on other large datasets as mentioned in the Table below. 
 <table>
   <tr>
     <th>Arch</th>
