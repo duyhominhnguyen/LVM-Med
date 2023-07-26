@@ -80,8 +80,8 @@ After downloading the pre-trained models, please place them in [`lvm_med_weights
     <td>ViT-B</td>
     <td>86.0M</td>
     <td> <a href="https://www.nature.com/articles/s41592-021-01249-6">LIVECell</a> </td>
-    <td> <a href="https://drive.google.com/file/d/11Uamq4bT_AbTf8sigIctIAnQJN4EethW/view?usp=sharing">backbone</a> </td>
-    <td> <a href="https://drive.google.com/file/d/11Uamq4bT_AbTf8sigIctIAnQJN4EethW/view?usp=sharing">Link</a></td>
+    <td> <a href="https://drive.google.com/file/d/1SxaGXQ4FMbG8pS2zzwTIXXgxF4GdwyEU/view?usp=sharing">backbone</a> </td>
+    <td> <a href="https://github.com/duyhominhnguyen/LVM-Med/blob/main/further_training_lvm_med/README.md">Link</a></td>
   </tr>
 </table>
 
