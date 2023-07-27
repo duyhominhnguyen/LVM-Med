@@ -263,7 +263,6 @@ We use and modify codes from [SAM](https://github.com/facebookresearch/segment-a
 ## License
 Licensed under the [CC BY-NC-ND 2.0](https://creativecommons.org/licenses/by-nc-nd/2.0/) (**Attribution-NonCommercial-NoDerivs 2.0 Generic**). The code is released for academic research use only. For commercial use, please contact [Ho_Minh_Duy.Nguyen@dfki.de](Ho_Minh_Duy.Nguyen@dfki.de)
 
-
 [//]: # (### f. LVM-Med )
 
 [//]: # (#### Training Phase)
