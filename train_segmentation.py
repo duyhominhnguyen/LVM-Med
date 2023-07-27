@@ -14,6 +14,7 @@ if __name__=="__main__":
             train_2d_R50(yml_args, cfg)
         if cfg.base.is_SAMVIT:
             train_2d_SAMVIT(yml_args, cfg)
+            
     if cfg.base.is_3D:
         if cfg.base.is_R50:
             train_3d_R50(yml_args, cfg)
