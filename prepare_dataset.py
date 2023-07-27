@@ -7,7 +7,6 @@ def get_args():
 
     return parser.parse_args()
 
-
 if __name__ == '__main__':
     args = get_args()
     
