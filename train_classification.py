@@ -9,6 +9,7 @@ if __name__=="__main__":
     cfg = load_config(yml_args.config)
  
     assert cfg.base.is_R50 + cfg.base.is_SAMVIT == 1
+    
     if cfg.base.is_R50:
         train_R50(yml_args, cfg)
     else:
