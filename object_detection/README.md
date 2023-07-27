@@ -28,3 +28,4 @@ bash command.sh
 ```bash
 CUDA_VISIBLE_DEVICES=5 python finetune_with_path_modify_test_eval.py --experiment-name 'lvm-med-r50' --weight-path ../lvm_med_weights/lvmmed_resnet.torch --batch-size 16 --optim adam --clip 1 --lr 0.0001 --epochs 40 --labeled-dataset-percent 1.0 --resume
 ```
+
