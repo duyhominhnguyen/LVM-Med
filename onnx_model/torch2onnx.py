@@ -30,7 +30,6 @@ def export_onnx(example_input: torch.Tensor,
     )
 
 if __name__ == "__main__":
-
     """
     Export LVM-Med (RN50 version)
     """
