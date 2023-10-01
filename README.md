@@ -28,7 +28,7 @@ current contrastive and instance-based SSL.
 
 ## News
 - :pencil2: If you want to have other architecture, send us a request by email or create an Issue. If the requests are enough, we will train them.
-- :construction: Cominng soon: [ConvNext](https://arxiv.org/abs/2201.03545) architecture trained by LVM-Med.
+- :construction: Coming soon: [ConvNext](https://arxiv.org/abs/2201.03545) architecture trained by LVM-Med.
 - :construction: Coming soon: ViT architectures for end-to-end segmentation with better performance reported in the paper.
 - **31/07/20203**: Release ONNX support for LVM-Med ResNet50 and LVM-Med ViT as backbones in [`onnx_model`](/onnx_model/) folder.
 - **26/07/2023**: We release ViT architectures (**ViT-B** and **ViT-H**) initialized from LVM-Med and further training on the LIVECell dataset with 1.6 million high-quality cells. See at this [table](#further-training-lvm-med-on-large-dataset). 
