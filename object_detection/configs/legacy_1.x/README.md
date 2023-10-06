@@ -17,7 +17,7 @@ There are three main difference in the model weights between V1.x and V2.0 codeb
 
 1. Since the class order in all the detector's classification branch is reordered, all the legacy model weights need to go through the conversion process.
 2. The regression and segmentation head no longer contain the background channel. Weights in these background channels should be removed to fix in the current codebase.
-3. For two-stage detectors, their wegihts need to be upgraded since MMDetection V2.0 refactors all the two-stage detectors with `RoIHead`.
+3. For two-stage detectors, their weights need to be upgraded since MMDetection V2.0 refactors all the two-stage detectors with `RoIHead`.
 
 The users can do the same modification as mentioned above for the self-implemented
 detectors. We provide a scripts `tools/model_converters/upgrade_model_version.py` to convert the model weights in the V1.x model zoo.
