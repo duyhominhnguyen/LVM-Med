@@ -94,9 +94,10 @@ def _build_sam(
         pixel_std=[58.395, 57.12, 57.375],
     )
     sam.eval()
+    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+
     if checkpoint is not None:
         with open(checkpoint, "rb") as f:
-            state_dict = torch.load(f)
-        device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-        sam.load_state_dict(state_dict, map_location=device)
+            state_dict = torch.load(f, map_location=device)
+        sam.load_state_dict(state_dict)
     return sam
