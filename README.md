@@ -27,6 +27,7 @@ current contrastive and instance-based SSL.
 * [License](#license)
 
 ## News
+- :mega: **14/12/2023**: The LVM-Med training algorithm is ready to be released! Please send us an email to request!
 - :pencil2: If you want to have other architecture, send us a request by email or create an Issue. If the requests are enough, we will train them.
 - :construction: Coming soon: [ConvNext](https://arxiv.org/abs/2201.03545) architecture trained by LVM-Med.
 - :construction: Coming soon: ViT architectures for end-to-end segmentation with better performance reported in the paper.
