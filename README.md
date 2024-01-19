@@ -91,7 +91,7 @@ We release some further pre-trained weight on other large datasets as mentioned 
     <td>ViT-H</td>
     <td>632M</td>
     <td> <a href="https://www.nature.com/articles/s41592-021-01249-6">LIVECell</a> </td>
-    <td> <a href="https://drive.google.com/file/d/14IhoyBXI9eP9V2xeOV2-6LlNICKjzBaJ/view?usp=sharing">backbone</a> </td>
+    <td> <a href="https://drive.google.com/file/d/17kSAYQJZ06Q5WFd2M9ZeJSpx27V1U3cM/view?usp=sharing">backbone</a> </td>
     <td> <a href="https://github.com/duyhominhnguyen/LVM-Med/blob/main/further_training_lvm_med/README.md">Link</a></td>
   </tr>
 </table>
