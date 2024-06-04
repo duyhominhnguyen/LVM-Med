@@ -118,8 +118,8 @@ git clone https://github.com/qubvel/segmentation_models.pytorch.git
 cd segmentation_models.pytorch 
 pip install -e 
 cd .. 
-mv segmentation_models_pytorch_example/encoders/__init__.py segmentation_models.pytorch/segmentation_models_pytorch/__init__.py 
-mv segmentation_models_pytorch_example/encoders/resnet.py segmentation_models.pytorch/segmentation_models_pytorch/resnet.py
+mv segmentation_models_pytorch_example/encoders/__init__.py segmentation_models.pytorch/segmentation_models_pytorch/encoders/__init__.py 
+mv segmentation_models_pytorch_example/encoders/resnet.py segmentation_models.pytorch/segmentation_models_pytorch/encoders/resnet.py
 ```
 
 <!-- 
