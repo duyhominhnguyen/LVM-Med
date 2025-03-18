@@ -49,14 +49,14 @@ current contrastive and instance-based SSL.
     <td>25.5M</td>
     <td>83.05</td>
     <td>79.02</td>
-    <td> <a href="https://drive.google.com/file/d/16HCXhNdLaOm34jZiDkBeVloI9mP5ngBo/view?usp=sharing">backbone</a> </td>
+    <td> <a href="https://drive.google.com/file/d/1p31IGo97g3ng9bOaq3eL8JaljfoCcBx0/view?usp=sharing">backbone</a> </td>
   </tr>
   <tr>
     <td>ViT-B</td>
     <td>86.0M</td>
     <td>85.80</td>
     <td>80.90</td>
-    <td> <a href="https://drive.google.com/file/d/17WnE34S0ylYiA3tMXobH8uUrK_mCVPT4/view?usp=sharing">backbone</a> </td>
+    <td> <a href="https://drive.google.com/file/d/1DOM3uyK8SGE5XRF1L6K6K_BWPfpPePRD/view?usp=sharing">backbone</a> </td>
   </tr>
 </table>
 
